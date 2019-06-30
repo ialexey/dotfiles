@@ -263,6 +263,10 @@ if has("patch-7.4.710")
   set listchars=space:·
 end
 
+if has("termguicolors")
+  set termguicolors
+endif
+
 let macvim_skip_colorscheme=1
 set background=dark
 let g:gruvbox_contrast_dark="hard"
