@@ -19,70 +19,76 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+if has("mac")
 " Python Setting {
   set pythondll=/usr/local/Frameworks/Python.framework/Versions/3.7/Python
   set pythonhome=/usr/local/Frameworks/Python.framework/Versions/3.7
   set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.7/Python
   set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.7
-" }
+  " }
+end
 
 call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-surround'
 
-  if has('nvim')
-    Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-  else
-    Plug 'Shougo/defx.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
-  endif
-  autocmd FileType defx call s:defx_my_settings()
-  function! s:defx_my_settings() abort
-    " Define mappings
-    nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
-    nnoremap <silent><buffer><expr> c defx#do_action('copy')
-    nnoremap <silent><buffer><expr> m defx#do_action('move')
-    nnoremap <silent><buffer><expr> p defx#do_action('paste')
-    nnoremap <silent><buffer><expr> l defx#do_action('open')
-    nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
-    nnoremap <silent><buffer><expr> o defx#do_action('open_or_close_tree')
-    nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
-    nnoremap <silent><buffer><expr> N defx#do_action('new_file')
-    nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
-    nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
-    nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
-    nnoremap <silent><buffer><expr> d defx#do_action('remove')
-    nnoremap <silent><buffer><expr> r defx#do_action('rename')
-    nnoremap <silent><buffer><expr> !  defx#do_action('execute_command')
-    nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
-    nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-    nnoremap <silent><buffer><expr> .  defx#do_action('toggle_ignored_files')
-    nnoremap <silent><buffer><expr> ; defx#do_action('repeat')
-    nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
-    nnoremap <silent><buffer><expr> - defx#do_action('cd', [getcwd()])
-    nnoremap <silent><buffer><expr> q defx#do_action('quit')
-    nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
-    nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
-    " open file in split and do not close defx
-    nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-  endfunction
-  " Open defx
-  nnoremap ,d :Defx -split=vertical -winwidth=41 -direction=topleft <cr>
-  " Reveal current file
-  nnoremap ,r :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>zz<C-w>W
-  autocmd FileType defx setlocal relativenumber
-  " make sure vim does not open files and other buffers on defx window
-  autocmd BufEnter * if bufname('#') =~# "defx" && winnr('$') > 1 | b# | endif
+  if has("mac")
+    if has('nvim')
+      Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+      Plug 'Shougo/defx.nvim'
+      Plug 'roxma/nvim-yarp'
+      Plug 'roxma/vim-hug-neovim-rpc'
+    endif
+    autocmd FileType defx call s:defx_my_settings()
+    function! s:defx_my_settings() abort
+      " Define mappings
+      nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
+      nnoremap <silent><buffer><expr> c defx#do_action('copy')
+      nnoremap <silent><buffer><expr> m defx#do_action('move')
+      nnoremap <silent><buffer><expr> p defx#do_action('paste')
+      nnoremap <silent><buffer><expr> l defx#do_action('open')
+      nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
+      nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
+      nnoremap <silent><buffer><expr> o defx#do_action('open_or_close_tree')
+      nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
+      nnoremap <silent><buffer><expr> N defx#do_action('new_file')
+      nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
+      nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
+      nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
+      nnoremap <silent><buffer><expr> d defx#do_action('remove')
+      nnoremap <silent><buffer><expr> r defx#do_action('rename')
+      nnoremap <silent><buffer><expr> !  defx#do_action('execute_command')
+      nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
+      nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+      nnoremap <silent><buffer><expr> .  defx#do_action('toggle_ignored_files')
+      nnoremap <silent><buffer><expr> ; defx#do_action('repeat')
+      nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
+      nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
+      nnoremap <silent><buffer><expr> - defx#do_action('cd', [getcwd()])
+      nnoremap <silent><buffer><expr> q defx#do_action('quit')
+      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
+      nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
+      nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
+      nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
+      nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
+      nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
+      nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
+      " open file in split and do not close defx
+      nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+    endfunction
+    " Open defx
+    nnoremap ,d :Defx -split=vertical -winwidth=41 -direction=topleft <cr>
+    " Reveal current file
+    nnoremap ,r :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>zz<C-w>W
+    autocmd FileType defx setlocal relativenumber
+    " make sure vim does not open files and other buffers on defx window
+    autocmd BufEnter * if bufname('#') =~# "defx" && winnr('$') > 1 | b# | endif
+  end
 
-  let g:coc_node_path="$HOME/.nvm/versions/node/v8.10.0/bin/node"
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  if has("mac")
+    let g:coc_node_path=expand("~/.nvm/versions/node/v8.10.0/bin/node")
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  end
 
   Plug 'airblade/vim-gitgutter'
 
@@ -113,8 +119,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'terryma/vim-multiple-cursors'
     let g:multi_cursor_exit_from_insert_mode = 0
 
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  Plug 'junegunn/fzf.vim'
+  if has("mac")
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     map <Leader>t :FZF<cr>
     map <Leader>b :Buffers<cr>
     " Tags in the current buffer
@@ -124,13 +131,14 @@ call plug#begin('~/.vim/plugged')
     map <Leader>a :Ag<cr>
     " Preview Ag
     command! -bang -nargs=* Ag
-      \ call fzf#vim#ag(<q-args>,
-      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-      \                         : fzf#vim#with_preview('right:50%'),
-      \                 <bang>0)
+          \ call fzf#vim#ag(<q-args>,
+          \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+          \                         : fzf#vim#with_preview('right:50%'),
+          \                 <bang>0)
     " Likewise, FZF / Files command with preview window
     command! -bang -nargs=* FZF
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+          \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+  end
 
   Plug 'kien/rainbow_parentheses.vim'
     au VimEnter * RainbowParenthesesToggle
