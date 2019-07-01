@@ -47,9 +47,9 @@ call plug#begin('~/.vim/plugged')
       nnoremap <silent><buffer><expr> m defx#do_action('move')
       nnoremap <silent><buffer><expr> p defx#do_action('paste')
       nnoremap <silent><buffer><expr> l defx#do_action('open')
-      nnoremap <silent><buffer><expr> E defx#do_action('open', 'vsplit')
+      nnoremap <silent><buffer><expr> E defx#do_action('drop', 'vsplit')
       nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
-      nnoremap <silent><buffer><expr> o defx#do_action('open_or_close_tree')
+      nnoremap <silent><buffer><expr> o defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('drop')
       nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
       nnoremap <silent><buffer><expr> N defx#do_action('new_file')
       nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
@@ -81,6 +81,7 @@ call plug#begin('~/.vim/plugged')
     " Reveal current file
     nnoremap ,r :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>zz<C-w>W
     autocmd FileType defx setlocal relativenumber
+    autocmd FileType defx setlocal number
     " make sure vim does not open files and other buffers on defx window
     autocmd BufEnter * if bufname('#') =~# "defx" && winnr('$') > 1 | b# | endif
   end
