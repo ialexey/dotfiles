@@ -120,26 +120,26 @@ call plug#begin('~/.vim/plugged')
   Plug 'terryma/vim-multiple-cursors'
     let g:multi_cursor_exit_from_insert_mode = 0
 
-  if has("mac")
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    map <Leader>t :FZF<cr>
-    map <Leader>b :Buffers<cr>
-    " Tags in the current buffer
-    map <Leader>r :BTags<cr>
-    map <Leader>R :Tags<cr>
-    map <Leader>l :BLines<cr>
-    map <Leader>a :Ag<cr>
-    " Preview Ag
-    command! -bang -nargs=* Ag
-          \ call fzf#vim#ag(<q-args>,
-          \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-          \                         : fzf#vim#with_preview('right:50%'),
-          \                 <bang>0)
-    " Likewise, FZF / Files command with preview window
-    command! -bang -nargs=* FZF
-          \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-  end
+  " if has("mac")
+  "   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  "   Plug 'junegunn/fzf.vim'
+  "   map <Leader>t :FZF<cr>
+  "   map <Leader>b :Buffers<cr>
+  "   " Tags in the current buffer
+  "   map <Leader>r :BTags<cr>
+  "   map <Leader>R :Tags<cr>
+  "   map <Leader>l :BLines<cr>
+  "   map <Leader>a :Rg<cr>
+  "   " Preview Ag
+  "   command! -bang -nargs=* Ag
+  "         \ call fzf#vim#ag(<q-args>,
+  "         \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  "         \                         : fzf#vim#with_preview('right:50%'),
+  "         \                 <bang>0)
+  "   " Likewise, FZF / Files command with preview window
+  "   command! -bang -nargs=* FZF
+  "         \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+  " end
 
   Plug 'kien/rainbow_parentheses.vim'
     au VimEnter * RainbowParenthesesToggle
@@ -148,9 +148,9 @@ call plug#begin('~/.vim/plugged')
     au Syntax * RainbowParenthesesLoadBraces
 
   Plug 'tmsvg/pear-tree'
-  let g:pear_tree_smart_openers = 1
-  let g:pear_tree_smart_closers = 1
-  let g:pear_tree_smart_backspace = 1
+    let g:pear_tree_smart_openers = 1
+    let g:pear_tree_smart_closers = 1
+    let g:pear_tree_smart_backspace = 1
 
   Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
@@ -167,6 +167,8 @@ call plug#begin('~/.vim/plugged')
   " :Gbrowse from fugitive.vim to open GitHub URLs
   Plug 'tpope/vim-rhubarb'
 
+  Plug 'tpope/vim-unimpaired'
+
   Plug 'morhetz/gruvbox'
 
   Plug 'scrooloose/nerdcommenter'
@@ -182,13 +184,29 @@ call plug#begin('~/.vim/plugged')
   Plug 'nelstrom/vim-textobj-rubyblock'
     runtime macros/matchit.vim
 
+  Plug 'ctrlpvim/ctrlp.vim'
+    " modifier to "r": start search from the cwd instead of the current file's directory
+    let g:ctrlp_working_path_mode = 'w'
+    if executable('rg')
+      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+      let g:ctrlp_use_caching = 0
+    endif
+
+  Plug 'jremmen/vim-ripgrep'
+
+  Plug 'rhysd/git-messenger.vim'
+    " the cursor goes into a popup window when running
+    let g:git_messenger_always_into_popup=v:true
+
 call plug#end()
 
 " We're running Vim, not Vi!
 set nocompatible
 
 " Enable syntax highlighting
-syntax on
+if !exists('g:syntax_on')
+  syntax on
+endif
 
 " Enable filetype detection
 filetype on
@@ -216,6 +234,8 @@ set laststatus=2
 
 " Case-insensitive search
 set ignorecase
+
+set tags=./tags
 
 " Highlight search results
 set hlsearch
@@ -259,6 +279,8 @@ set autoread
 " Default to Unix LF line endings
 set ffs=unix
 
+set incsearch
+
 if has("patch-7.4.710")
   set list
   set listchars=space:·
@@ -282,25 +304,14 @@ set cursorline
 
 set completeopt=menu,menuone,preview,noinsert
 
+let g:updatetime=250
+set updatetime=250
+
 let mapleader='\'
 
 " New Lines at Insert Mode
 imap <S-D-CR> <Esc>O
 imap <S-CR> <Esc>o
-
-" New Lines at Normal Mode (Alt-O, Alt-o)
-nmap Ø O<Esc>
-nmap ø o<Esc>
-
-" Use <c-space> to trigger completion.
-inoremap <silent> <c-space> <C-n>
-
-" Tab as down arrow when completion menu is visible
-inoremap <expr> <TAB> pumvisible() ? "\<Down>" : "\<TAB>"
-inoremap <expr> <S-TAB> pumvisible() ? "\<Up>" : "\<TAB>"
-
-" Escape to close completion menu
-inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 nmap gd <Plug>(coc-definition)
 
@@ -309,10 +320,6 @@ nmap <leader>q :bp <BAR> bd #<cr>
 
 " Hide search highlight on double Esc
 nmap <Esc><Esc> :nohl<cr>
-
-" Tab / Shift-Tab for next / prev buffer
-noremap <Tab> :bn<cr>
-noremap <S-Tab> :bp<cr>
 
 " Cmd-1, Cmd-2, ... for 1st, 2nd, etc opened buffers (not buffer number)
 noremap <D-1> :bfirst<CR>
