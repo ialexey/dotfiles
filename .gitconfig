@@ -3,7 +3,7 @@
 	email = alexeykara@gmail.com
 	signingkey = E664E436B8BCE068
 [github]
-  user = ialexey
+	user = ialexey
 [core]
 	editor = mvim -f
 	pager = diff-so-fancy | less --tabs=2
@@ -38,3 +38,7 @@
 	program = smimesign
 [gpg]
 	format = x509
+[push]
+	default = current
+[pull]
+	rebase = true

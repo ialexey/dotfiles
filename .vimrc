@@ -187,16 +187,27 @@ call plug#begin('~/.vim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
     " modifier to "r": start search from the cwd instead of the current file's directory
     let g:ctrlp_working_path_mode = 'w'
-    if executable('rg')
-      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+    " if executable('rg')
+    "   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+    "   let g:ctrlp_use_caching = 0
+    " endif
+    if executable('ag')
+      let g:ctrlp_user_command = 'ag %s -l --nocolor --nogroup --hidden -g ""'
       let g:ctrlp_use_caching = 0
     endif
+
+  Plug 'wincent/command-t'
 
   Plug 'jremmen/vim-ripgrep'
 
   Plug 'rhysd/git-messenger.vim'
     " the cursor goes into a popup window when running
     let g:git_messenger_always_into_popup=v:true
+
+  Plug 'AndrewRadev/splitjoin.vim'
+
+  Plug 'tpope/vim-vinegar'
+  let g:netrw_winsize = 20
 
 call plug#end()
 
@@ -234,8 +245,6 @@ set laststatus=2
 
 " Case-insensitive search
 set ignorecase
-
-set tags=./tags
 
 " Highlight search results
 set hlsearch
@@ -309,6 +318,19 @@ set updatetime=250
 
 let mapleader='\'
 
+function! ToggleNetrw()
+	    let isOpen = 0
+	    for i in range(1, bufnr("$"))
+	        if(getbufvar(i, "&filetype") == "netrw")
+	            silent exec "bwipeout " . i
+	            let isOpen = 1
+	        endif
+	    endfor
+	    if !isOpen
+	        silent Lexplore
+	    endif
+	endfunction
+
 " New Lines at Insert Mode
 imap <S-D-CR> <Esc>O
 imap <S-CR> <Esc>o
@@ -331,6 +353,16 @@ noremap <D-6> :bfirst<CR>:5bn<CR>
 noremap <D-8> :bfirst<CR>:6bn<CR>
 noremap <D-9> :bfirst<CR>:7bn<CR>
 noremap <D-0> :bfirst<CR>:8bn<CR>
+
+nnoremap <C-l> :CtrlPBufTag<CR>
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Yank current file path
+nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
 
 " Trim whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
