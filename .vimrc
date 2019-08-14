@@ -19,77 +19,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-if has("mac")
-" Python Setting {
-  set pythondll=/usr/local/Frameworks/Python.framework/Versions/3.7/Python
-  set pythonhome=/usr/local/Frameworks/Python.framework/Versions/3.7
-  set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/3.7/Python
-  set pythonthreehome=/usr/local/Frameworks/Python.framework/Versions/3.7
-  " }
-end
-
 call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-surround'
-
-  if has("mac")
-    if has('nvim')
-      Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-      Plug 'Shougo/defx.nvim'
-      Plug 'roxma/nvim-yarp'
-      Plug 'roxma/vim-hug-neovim-rpc'
-    endif
-    autocmd FileType defx call s:defx_my_settings()
-    function! s:defx_my_settings() abort
-      " Define mappings
-      nnoremap <silent><buffer><expr> <CR> defx#do_action('open')
-      nnoremap <silent><buffer><expr> c defx#do_action('copy')
-      nnoremap <silent><buffer><expr> m defx#do_action('move')
-      nnoremap <silent><buffer><expr> p defx#do_action('paste')
-      nnoremap <silent><buffer><expr> l defx#do_action('open')
-      nnoremap <silent><buffer><expr> E defx#do_action('drop', 'vsplit')
-      nnoremap <silent><buffer><expr> P defx#do_action('open', 'pedit')
-      nnoremap <silent><buffer><expr> o defx#is_directory() ? defx#do_action('open_or_close_tree') : defx#do_action('drop')
-      nnoremap <silent><buffer><expr> K defx#do_action('new_directory')
-      nnoremap <silent><buffer><expr> N defx#do_action('new_file')
-      nnoremap <silent><buffer><expr> M defx#do_action('new_multiple_files')
-      nnoremap <silent><buffer><expr> C defx#do_action('toggle_columns', 'mark:indent:icon:filename:type:size:time')
-      nnoremap <silent><buffer><expr> S defx#do_action('toggle_sort', 'time')
-      nnoremap <silent><buffer><expr> d defx#do_action('remove')
-      nnoremap <silent><buffer><expr> r defx#do_action('rename')
-      nnoremap <silent><buffer><expr> !  defx#do_action('execute_command')
-      nnoremap <silent><buffer><expr> x defx#do_action('execute_system')
-      nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-      nnoremap <silent><buffer><expr> .  defx#do_action('toggle_ignored_files')
-      nnoremap <silent><buffer><expr> ; defx#do_action('repeat')
-      nnoremap <silent><buffer><expr> h defx#do_action('cd', ['..'])
-      nnoremap <silent><buffer><expr> ~ defx#do_action('cd')
-      nnoremap <silent><buffer><expr> - defx#do_action('cd', [getcwd()])
-      nnoremap <silent><buffer><expr> q defx#do_action('quit')
-      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
-      nnoremap <silent><buffer><expr> * defx#do_action('toggle_select_all')
-      nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-      nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-      nnoremap <silent><buffer><expr> <C-l> defx#do_action('redraw')
-      nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
-      nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
-      " open file in split and do not close defx
-      nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-    endfunction
-    " Open defx
-    nnoremap ,d :Defx -split=vertical -winwidth=41 -direction=topleft <cr>
-    " Reveal current file
-    nnoremap ,r :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>zz<C-w>W
-    autocmd FileType defx setlocal relativenumber
-    autocmd FileType defx setlocal number
-    " make sure vim does not open files and other buffers on defx window
-    autocmd BufEnter * if bufname('#') =~# "defx" && winnr('$') > 1 | b# | endif
-  end
-
-  if has("mac")
-    let g:coc_node_path=expand("~/.nvm/versions/node/v8.10.0/bin/node")
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  end
 
   Plug 'airblade/vim-gitgutter'
 
@@ -99,15 +30,23 @@ call plug#begin('~/.vim/plugged')
     let g:airline_powerline_fonts = 1
     let g:airline#extensions#ale#enabled = 1
     let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#coc#enabled = 1
 
+  " Enable completion where available.
+  " This setting must be set before ALE is loaded.
+  "
+  " You should not turn this setting on if you wish to use ALE as a completion
+  " source for other completion plugins, like Deoplete.
+  let g:ale_completion_enabled = 1
+  let g:ale_set_balloons = 1
   if has('nvim') || v:version > 800
     Plug 'w0rp/ale'
       " Gutter always open
       let g:ale_sign_column_always = 1
       let g:ale_sign_warning = "◉"
       let g:ale_sign_error = "◉"
-      let g:ale_set_balloons = 1
+      let g:ale_rust_rls_config = {'rust': {'clippy_preference': 'on'}}
+      let g:ale_rust_cargo_use_clippy = 1
+      nnoremap gd :ALEGoToDefinition<cr>
   endif
 
   Plug 'junegunn/vim-easy-align'
@@ -120,37 +59,14 @@ call plug#begin('~/.vim/plugged')
   Plug 'terryma/vim-multiple-cursors'
     let g:multi_cursor_exit_from_insert_mode = 0
 
-  " if has("mac")
-  "   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  "   Plug 'junegunn/fzf.vim'
-  "   map <Leader>t :FZF<cr>
-  "   map <Leader>b :Buffers<cr>
-  "   " Tags in the current buffer
-  "   map <Leader>r :BTags<cr>
-  "   map <Leader>R :Tags<cr>
-  "   map <Leader>l :BLines<cr>
-  "   map <Leader>a :Rg<cr>
-  "   " Preview Ag
-  "   command! -bang -nargs=* Ag
-  "         \ call fzf#vim#ag(<q-args>,
-  "         \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  "         \                         : fzf#vim#with_preview('right:50%'),
-  "         \                 <bang>0)
-  "   " Likewise, FZF / Files command with preview window
-  "   command! -bang -nargs=* FZF
-  "         \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-  " end
-
   Plug 'kien/rainbow_parentheses.vim'
     au VimEnter * RainbowParenthesesToggle
     au Syntax * RainbowParenthesesLoadRound
     au Syntax * RainbowParenthesesLoadSquare
     au Syntax * RainbowParenthesesLoadBraces
 
-  Plug 'tmsvg/pear-tree'
-    let g:pear_tree_smart_openers = 1
-    let g:pear_tree_smart_closers = 1
-    let g:pear_tree_smart_backspace = 1
+  Plug 'jiangmiao/auto-pairs'
+    let g:AutoPairsMultilineClose = 0
 
   Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
@@ -187,27 +103,42 @@ call plug#begin('~/.vim/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
     " modifier to "r": start search from the cwd instead of the current file's directory
     let g:ctrlp_working_path_mode = 'w'
-    " if executable('rg')
-    "   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-    "   let g:ctrlp_use_caching = 0
-    " endif
-    if executable('ag')
-      let g:ctrlp_user_command = 'ag %s -l --nocolor --nogroup --hidden -g ""'
+    if executable('rg')
+      let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
       let g:ctrlp_use_caching = 0
     endif
-
-  Plug 'wincent/command-t'
+    " if executable('ag')
+    "   let g:ctrlp_user_command = 'ag %s -l --nocolor --nogroup --hidden -g ""'
+    "   let g:ctrlp_use_caching = 0
+    " endif
 
   Plug 'jremmen/vim-ripgrep'
 
-  Plug 'rhysd/git-messenger.vim'
-    " the cursor goes into a popup window when running
-    let g:git_messenger_always_into_popup=v:true
-
   Plug 'AndrewRadev/splitjoin.vim'
 
-  Plug 'tpope/vim-vinegar'
-  let g:netrw_winsize = 20
+  " Plug 'tpope/vim-vinegar'
+  "   let g:netrw_winsize = 20
+
+  Plug 'rust-lang/rust.vim'
+
+  Plug 'racer-rust/vim-racer'
+    au FileType rust nmap gd <Plug>(rust-def)
+
+  Plug 'easymotion/vim-easymotion'
+
+  Plug 'elixir-editors/vim-elixir'
+
+  Plug 'leafgarland/typescript-vim'
+  Plug 'MaxMEllon/vim-jsx-pretty'
+    highlight def link jsxTag xmlTag
+    highlight def link jsxTagName xmlTagName
+    highlight def link jsxComponentName xmlTagName
+    highlight def link jsxAttrib htmlArg
+    highlight def link jsxOpenPunct xmlTag
+    highlight def link jsxCloseString jsxOpenPunct
+
+  Plug 'justinmk/vim-dirvish'
+    let g:dirvish_mode = ':sort ,^.*[\/],'
 
 call plug#end()
 
@@ -290,6 +221,10 @@ set ffs=unix
 
 set incsearch
 
+" . To search relative to the directory of the current file
+" ,, To search in the current directory
+set path=.,,
+
 if has("patch-7.4.710")
   set list
   set listchars=space:·
@@ -311,48 +246,22 @@ set guifont=Fira\ Code\ Retina:h12
 set linespace=4
 set cursorline
 
-set completeopt=menu,menuone,preview,noinsert
+set completeopt=menu,menuone,preview,noselect,noinsert
 
 let g:updatetime=250
 set updatetime=250
 
 let mapleader='\'
 
-function! ToggleNetrw()
-	    let isOpen = 0
-	    for i in range(1, bufnr("$"))
-	        if(getbufvar(i, "&filetype") == "netrw")
-	            silent exec "bwipeout " . i
-	            let isOpen = 1
-	        endif
-	    endfor
-	    if !isOpen
-	        silent Lexplore
-	    endif
-	endfunction
-
 " New Lines at Insert Mode
 imap <S-D-CR> <Esc>O
 imap <S-CR> <Esc>o
-
-nmap gd <Plug>(coc-definition)
 
 " Close current buffer but not split
 nmap <leader>q :bp <BAR> bd #<cr>
 
 " Hide search highlight on double Esc
 nmap <Esc><Esc> :nohl<cr>
-
-" Cmd-1, Cmd-2, ... for 1st, 2nd, etc opened buffers (not buffer number)
-noremap <D-1> :bfirst<CR>
-noremap <D-2> :bfirst<CR>:bn<CR>
-noremap <D-3> :bfirst<CR>:2bn<CR>
-noremap <D-4> :bfirst<CR>:3bn<CR>
-noremap <D-5> :bfirst<CR>:4bn<CR>
-noremap <D-6> :bfirst<CR>:5bn<CR>
-noremap <D-8> :bfirst<CR>:6bn<CR>
-noremap <D-9> :bfirst<CR>:7bn<CR>
-noremap <D-0> :bfirst<CR>:8bn<CR>
 
 nnoremap <C-l> :CtrlPBufTag<CR>
 
@@ -366,3 +275,6 @@ nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
 
 " Trim whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
+
+set omnifunc=ale#completion#OmniFunc
+autocmd FileType ruby setlocal omnifunc=ale#completion#OmniFunc
