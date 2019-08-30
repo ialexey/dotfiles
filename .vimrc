@@ -19,7 +19,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+if has("nvim")
+call plug#begin('~/.local/share/nvim/plugged')
+else
 call plug#begin('~/.vim/plugged')
+end
   Plug 'tpope/vim-surround'
 
   Plug 'airblade/vim-gitgutter'
@@ -45,7 +49,10 @@ call plug#begin('~/.vim/plugged')
       let g:ale_sign_warning = "◉"
       let g:ale_sign_error = "◉"
       let g:ale_rust_rls_config = {'rust': {'clippy_preference': 'on'}}
-      let g:ale_rust_cargo_use_clippy = 1
+      " let g:ale_rust_cargo_use_clippy = 1
+      let g:ale_linters = {
+                  \ 'rust': [ 'rls' ],
+                  \ }
       nnoremap gd :ALEGoToDefinition<cr>
   endif
 
@@ -65,8 +72,8 @@ call plug#begin('~/.vim/plugged')
     au Syntax * RainbowParenthesesLoadSquare
     au Syntax * RainbowParenthesesLoadBraces
 
-  Plug 'jiangmiao/auto-pairs'
-    let g:AutoPairsMultilineClose = 0
+  " Plug 'jiangmiao/auto-pairs'
+  "   let g:AutoPairsMultilineClose = 0
 
   Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
@@ -121,8 +128,8 @@ call plug#begin('~/.vim/plugged')
 
   Plug 'rust-lang/rust.vim'
 
-  Plug 'racer-rust/vim-racer'
-    au FileType rust nmap gd <Plug>(rust-def)
+  " Plug 'racer-rust/vim-racer'
+    " au FileType rust nmap gd <Plug>(rust-def)
 
   Plug 'easymotion/vim-easymotion'
 
@@ -140,6 +147,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'justinmk/vim-dirvish'
     let g:dirvish_mode = ':sort ,^.*[\/],'
 
+  Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
 " We're running Vim, not Vi!
@@ -252,6 +260,14 @@ let g:updatetime=250
 set updatetime=250
 
 let mapleader='\'
+
+" Nice window title
+if has('title') && (has('gui_running') || &title)
+    set titlestring=
+    set titlestring+=%f\                                              " file name
+    set titlestring+=%h%m%r%w                                         " flags
+    set titlestring+=\ -\ %{v:progname}                               " program name
+endif
 
 " New Lines at Insert Mode
 imap <S-D-CR> <Esc>O
