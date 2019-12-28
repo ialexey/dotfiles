@@ -112,8 +112,14 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export ANDROID_HOME='/usr/local/Caskroom/android-sdk/4333796'
-export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin"
+# export ANDROID_HOME='/usr/local/Caskroom/android-sdk/4333796'
+# export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin"
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+export PATH="$HOME/Library/Android/sdk/emulator:$PATH"
+export PATH="$HOME/Library/Android/sdk/tools/bin:$PATH"
+export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

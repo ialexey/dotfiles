@@ -40,7 +40,7 @@ end
   "
   " You should not turn this setting on if you wish to use ALE as a completion
   " source for other completion plugins, like Deoplete.
-  let g:ale_completion_enabled = 1
+  " let g:ale_completion_enabled = 1
   let g:ale_set_balloons = 1
   if has('nvim') || v:version > 800
     Plug 'w0rp/ale'
@@ -94,14 +94,7 @@ end
 
   Plug 'morhetz/gruvbox'
 
-  Plug 'scrooloose/nerdcommenter'
-    " Add spaces after comment
-    let g:NERDSpaceDelims = 1
-
-    " Align all comments to the left  when multiline
-    let g:NERDDefaultAlign = 'left'
-
-    let g:NERDCommentEmptyLines = 1
+  Plug 'tpope/vim-commentary'
 
   Plug 'kana/vim-textobj-user'
   Plug 'nelstrom/vim-textobj-rubyblock'
@@ -246,6 +239,8 @@ let macvim_skip_colorscheme=1
 set background=dark
 let g:gruvbox_contrast_dark="hard"
 colorscheme gruvbox
+highlight Whitespace guifg='#504945'
+match Whitespace /\s\+/
 if has("gui_macvim")
   set macligatures
 end
@@ -259,7 +254,17 @@ set completeopt=menu,menuone,preview,noselect,noinsert
 let g:updatetime=250
 set updatetime=250
 
-let mapleader='\'
+" let mapleader='\'
+let mapleader=' '
+nnoremap <space> <nop>
+
+nnoremap <leader>p :CtrlPBufTag<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+
+" No scroll bar in GUI
+if has('gui_running')
+  set guioptions-=r
+end
 
 " Nice window title
 if has('title') && (has('gui_running') || &title)
@@ -279,8 +284,6 @@ nmap <leader>q :bp <BAR> bd #<cr>
 " Hide search highlight on double Esc
 nmap <Esc><Esc> :nohl<cr>
 
-nnoremap <C-l> :CtrlPBufTag<CR>
-
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -292,5 +295,5 @@ nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
 " Trim whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
-set omnifunc=ale#completion#OmniFunc
+" set omnifunc=ale#completion#OmniFunc
 autocmd FileType ruby setlocal omnifunc=ale#completion#OmniFunc
