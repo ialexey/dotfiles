@@ -1,0 +1,106 @@
+set folder           = ~/Mail
+set header_cache     = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/bodies
+
+set mailcap_path     = ~/.mutt/mailcap
+set tmpdir           = ~/.mutt/tmp
+
+set wait_key   = no
+set mbox_type  = Maildir
+set timeout    = 3
+set mail_check = 0
+
+set editor     = "vim"
+
+unset mark_old # avoid marking unread msgs as old ones
+
+set pager_index_lines = 10 # number of index lines to show
+set pager_context     = 5  # number of context lines to show
+set pager_stop             # don't go to the next message automatically
+unset markers              # In the pager, don't display + at the beginning of wrapped lines; it's distracting
+set tilde                  # show tildes like in vim
+set sort              = "threads"
+set sort_aux          = reverse-last-date-received
+set include           = yes #automatically quote message
+set status_format     = "───[ Folder: %f ]───[%r%m messages%?n? (%n new)?%?d? (%d to delete)?%?t? (%t tagged)? ]───%>─%?p?( %p postponed )?───"
+set charset           = "utf-8"
+set sleep_time=0 # no delay when switching mailboxes
+set new_mail_command = "afplay '/System/Applications/Mail.app/Contents/Resources/New Mail.aiff' %"
+
+set move = no # Don't move read mail to All Mail
+set help = no # Don't show help bar
+
+# compose View Options
+set edit_headers                     # show headers when composing
+set fast_reply                       # skip to compose when replying
+set askcc                            # ask for CC:
+set fcc_attach                       # save attachments with the body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set reply_to                         # reply to Reply to: field
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+set forward_quote                    # include message in forwards
+set text_flowed
+set sig_dashes                       # no dashes before sig
+unset mime_forward                   # forward attachments as part of body
+
+# sidebar config
+set sidebar_visible
+set sidebar_short_path
+set sidebar_folder_indent
+set sidebar_width = 25
+set sidebar_divider_char = ' | '
+set sidebar_indent_string = '  ''
+set sidebar_format = "%B %* [%?N?%N / ?%S]"
+# set sidebar_format = '%B%?F? [%F]?%* %?N?%N/? %?S?%S?'
+set mail_check_stats # periodically calculate message statistics
+set mail_check_stats_interval = 15
+
+# Mailboxes to show in the sidebar.
+named-mailboxes "Inbox[example]" "=example/INBOX" "Sent" "=example/[Gmail].Sent Mail" "Drafts" "=example/[Gmail].Drafts" "Spam" "=example/[Gmail].Spam"
+
+source ~/.mutt/colors-gruvbox-shuber.muttrc
+source ~/.mutt/colors-gruvbox-shuber-extended.muttrc
+
+#
+# Bindings
+#
+bind index g noop
+bind index gg           first-entry
+bind index G            last-entry
+bind index K            previous-thread
+bind index J            next-thread
+bind index \Ce next-line
+
+bind pager g noop
+bind pager gg          top
+bind pager G           bottom
+bind pager J next-line
+bind pager \Ce next-line
+bind index,pager \Cd half-down
+bind index,pager \Cu half-up
+bind index,pager N search-opposite
+bind pager K previous-line
+
+bind index,pager [ sidebar-prev
+bind index,pager ] sidebar-next
+bind index,pager o sidebar-open
+
+macro index b '<enter-command>toggle sidebar_visible<enter>'
+macro pager b '<enter-command>toggle sidebar_visible<enter>'
+# display only new
+macro index,pager gn "<limit>~N|~O<Enter>"
+# display only flagged (important)
+macro index,pager gf "<limit>~F<Enter>"
+# display all
+macro index,pager ga "<limit>all<Enter>"
+macro index,pager \cb ": unset wait_key; set pipe_decode\n|urlview\n: set wait_key; unset pipe_decode\n" "call w3m to extract URLs out of a message"
+
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# default mailbox on launch
+source ~/.mutt/accounts/example
+
+folder-hook example/* source ~/.mutt/accounts/example

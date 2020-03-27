@@ -1,0 +1,2 @@
+image/*;        ~/imgcat '%s' && read
+text/html; w3m -T text/html -cols 110 -dump %s; copiousoutput

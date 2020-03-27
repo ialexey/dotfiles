@@ -49,28 +49,29 @@ ZSH_THEME="minimal"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git
-         rails
-         ruby
-         rake
-         sublime
-         brew
-         bundler
-         capistrano
-         osx
-         yarn
-         npm
-         vi-mode)
+plugins=(
+  git
+  # rails
+  # ruby
+  # rake
+  # brew
+  # bundler
+  # osx
+  # yarn
+  # npm
+  vi-mode
+)
 
 # User configuration
 
-#export PATH="/Users/alexey/.rvm/gems/ruby-2.1.0@catworkshop/bin:/Users/alexey/.rvm/gems/ruby-2.1.0@global/bin:/Users/alexey/.rvm/rubies/ruby-2.1.0/bin:/Users/alexey/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/alexey/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -106,14 +107,9 @@ function myip() {
   curl ipinfo.io/ip
 }
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# export ANDROID_HOME='/usr/local/Caskroom/android-sdk/4333796'
-# export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -121,8 +117,20 @@ export PATH="$HOME/Library/Android/sdk/emulator:$PATH"
 export PATH="$HOME/Library/Android/sdk/tools/bin:$PATH"
 export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 bindkey -M vicmd '_' beginning-of-line
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
+export EDITOR="mvim"
+alias mvim='open -a MacVim'
+
+# Java shit
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$HOME/.gradle/wrapper/dists/gradle-4.10.3-all/81msde2dx9p4vji0mjgtvxkcb/gradle-4.10.3/bin:$PATH"
+
+eval "$(rbenv init -)"
+
+# make Ctrl-O working
+stty discard undef

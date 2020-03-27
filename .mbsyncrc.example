@@ -1,0 +1,30 @@
+#################################
+######## Account email ########
+#################################
+
+IMAPAccount email
+Host imap.gmail.com
+User email@gmail.com
+PassCmd "security find-generic-password -a 'email@gmail.com' -s 'email@gmail.com'  -w"
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs LOGIN
+
+# Remote storage
+IMAPStore email-remote
+Account email
+
+# Local storage
+MaildirStore email-local
+Path ~/Mail/email/
+Inbox ~/Mail/email/INBOX
+Subfolders Verbatim
+Flatten .
+
+Channel email
+Master :email-remote:
+Slave :email-local:
+Patterns * !"[Gmail]/All Mail"
+Create Both
+Expunge Both
+SyncState *

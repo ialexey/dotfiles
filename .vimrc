@@ -24,6 +24,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 else
 call plug#begin('~/.vim/plugged')
 end
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
   Plug 'tpope/vim-surround'
 
   Plug 'airblade/vim-gitgutter'
@@ -32,29 +34,7 @@ end
     " Airline options
     let g:airline#extensions#branch#enabled = 1
     let g:airline_powerline_fonts = 1
-    let g:airline#extensions#ale#enabled = 1
     let g:airline#extensions#tabline#enabled = 1
-
-  " Enable completion where available.
-  " This setting must be set before ALE is loaded.
-  "
-  " You should not turn this setting on if you wish to use ALE as a completion
-  " source for other completion plugins, like Deoplete.
-  " let g:ale_completion_enabled = 1
-  let g:ale_set_balloons = 1
-  if has('nvim') || v:version > 800
-    Plug 'w0rp/ale'
-      " Gutter always open
-      let g:ale_sign_column_always = 1
-      let g:ale_sign_warning = "◉"
-      let g:ale_sign_error = "◉"
-      let g:ale_rust_rls_config = {'rust': {'clippy_preference': 'on'}}
-      " let g:ale_rust_cargo_use_clippy = 1
-      let g:ale_linters = {
-                  \ 'rust': [ 'rls' ],
-                  \ }
-      nnoremap gd :ALEGoToDefinition<cr>
-  endif
 
   Plug 'junegunn/vim-easy-align'
     " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -140,7 +120,10 @@ end
   Plug 'justinmk/vim-dirvish'
     let g:dirvish_mode = ':sort ,^.*[\/],'
 
-  Plug 'zxqfl/tabnine-vim'
+  " Plug 'zxqfl/tabnine-vim'
+  Plug 'diepm/vim-rest-console'
+
+  Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " We're running Vim, not Vi!
@@ -249,7 +232,7 @@ set guifont=Fira\ Code\ Retina:h12
 set linespace=4
 set cursorline
 
-set completeopt=menu,menuone,preview,noselect,noinsert
+set completeopt=menu,menuone,popup,noselect,noinsert
 
 let g:updatetime=250
 set updatetime=250
@@ -258,7 +241,7 @@ set updatetime=250
 let mapleader=' '
 nnoremap <space> <nop>
 
-nnoremap <leader>p :CtrlPBufTag<CR>
+nnoremap <leader>p :<C-u>CocList outline<cr>
 nnoremap <leader>b :CtrlPBuffer<CR>
 
 " No scroll bar in GUI
@@ -295,5 +278,18 @@ nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
 " Trim whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
-" set omnifunc=ale#completion#OmniFunc
-autocmd FileType ruby setlocal omnifunc=ale#completion#OmniFunc
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gr <Plug>(coc-references)
+
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+
+" Formatting selected code.
+xmap <leader>f :call CocActionAsync('format')<cr>
+nmap <leader>f :call CocActionAsync('format')<cr>
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+inoremap <silent><expr> <c-n>
+      \ pumvisible() ? "\<C-n>" :
+      \ coc#refresh()
