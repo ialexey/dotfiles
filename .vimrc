@@ -257,6 +257,9 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=\ -\ %{v:progname}                               " program name
 endif
 
+" start full screen
+set fu
+
 " New Lines at Insert Mode
 imap <S-D-CR> <Esc>O
 imap <S-CR> <Esc>o
