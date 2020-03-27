@@ -1,0 +1,13 @@
+set from      = "Josn Smith <example@domain.com>"
+set spoolfile = "+example/INBOX"
+set postponed = "+example/[Gmail].Drafts"
+set record    = "+example/[Gmail].Sent Mail"
+set trash     = "+example/[Gmail].Trash"
+
+set smtp_url         = "smtp://example@example.com@smtp.gmail.com:587/"
+set smtp_pass        = `security find-generic-password -a 'example@example.com' -s 'example@example.com'  -w`
+set smtp_authenticators = 'gssapi:login'
+
+set signature = "~/.mutt/accounts/example.sig"
+
+# vim: ft=muttrc :

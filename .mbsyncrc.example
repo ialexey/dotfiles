@@ -1,29 +1,29 @@
 #################################
-######## Account email ########
+######## Account example ########
 #################################
 
-IMAPAccount email
+IMAPAccount example
 Host imap.gmail.com
-User email@gmail.com
-PassCmd "security find-generic-password -a 'email@gmail.com' -s 'email@gmail.com'  -w"
+User example@gmail.com
+PassCmd "security find-generic-password -a 'example@gmail.com' -s 'example@gmail.com'  -w"
 SSLType IMAPS
 SSLVersions TLSv1.2
 AuthMechs LOGIN
 
 # Remote storage
-IMAPStore email-remote
-Account email
+IMAPStore example-remote
+Account example
 
 # Local storage
-MaildirStore email-local
-Path ~/Mail/email/
-Inbox ~/Mail/email/INBOX
+MaildirStore example-local
+Path ~/Mail/example/
+Inbox ~/Mail/example/INBOX
 Subfolders Verbatim
 Flatten .
 
-Channel email
-Master :email-remote:
-Slave :email-local:
+Channel example
+Master :example-remote:
+Slave :example-local:
 Patterns * !"[Gmail]/All Mail"
 Create Both
 Expunge Both
