@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{%F{white}%}["
+ZSH_THEME_GIT_PROMPT_SUFFIX="]"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{%F{red}%}●%{%F{white}%}%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="]%{$reset_color%} "
+
+function git_prompt_info() {
+  local ref
+  ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
+      echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+
+function git_dirty() {
+  [[ $(git status --untracked-files=no --porcelain 2> /dev/null | wc -l | awk "{print $1}") -gt 0 ]] && echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+}
+
+git_prompt_info
