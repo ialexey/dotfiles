@@ -1,6 +1,7 @@
 set folder           = ~/Mail
 set header_cache     = ~/.mutt/cache/headers
 set message_cachedir = ~/.mutt/cache/bodies
+set maildir_header_cache_verify = no
 
 set mailcap_path     = ~/.mutt/mailcap
 set tmpdir           = ~/.mutt/tmp
@@ -31,7 +32,7 @@ set move = no # Don't move read mail to All Mail
 set help = no # Don't show help bar
 
 # compose View Options
-set edit_headers                     # show headers when composing
+set edit_headers = no                     # show headers when composing
 set fast_reply                       # skip to compose when replying
 set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
@@ -52,13 +53,13 @@ set sidebar_folder_indent
 set sidebar_width = 25
 set sidebar_divider_char = ' | '
 set sidebar_indent_string = '  ''
-set sidebar_format = "%B %* [%?N?%N / ?%S]"
+set sidebar_format = "%B %* [%?F?%F! / ?%?N?%N / ?%S]"
 # set sidebar_format = '%B%?F? [%F]?%* %?N?%N/? %?S?%S?'
 set mail_check_stats # periodically calculate message statistics
 set mail_check_stats_interval = 15
 
 # Mailboxes to show in the sidebar.
-named-mailboxes "Inbox[example]" "=example/INBOX" "Sent" "=example/[Gmail].Sent Mail" "Drafts" "=example/[Gmail].Drafts" "Spam" "=example/[Gmail].Spam"
+named-mailboxes "Inbox[example]" "=example/INBOX" "Sent" "=example/[Gmail].Sent Mail" "Drafts" "=example/[Gmail].Drafts" "Spam" "=example/[Gmail].Spam" "  Archive" "=example/[Gmail].All Mail"
 
 source ~/.mutt/colors-gruvbox-shuber.muttrc
 source ~/.mutt/colors-gruvbox-shuber-extended.muttrc
@@ -86,6 +87,8 @@ bind pager K previous-line
 bind index,pager [ sidebar-prev
 bind index,pager ] sidebar-next
 bind index,pager o sidebar-open
+
+bind index,pager R group-reply
 
 macro index b '<enter-command>toggle sidebar_visible<enter>'
 macro pager b '<enter-command>toggle sidebar_visible<enter>'

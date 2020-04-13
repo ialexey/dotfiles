@@ -1,0 +1,17 @@
+ctrl - 1 : open -a Alacritty; tmux select-window -t 1
+ctrl - 2 : open -a MacVim
+ctrl - 3 : open -a Safari
+ctrl - 4 : open -a Google\ Chrome
+ctrl - s : open -a Slack
+ctrl - t : open -a Telegram
+ctrl - m : open -a Alacritty; tmux select-window -t 2
+ctrl - f : open -a Alacritty; tmux select-window -t 4
+ctrl + cmd - return [
+  "Alacritty" : tmux resize-pane -Z
+]
+ctrl - return [
+  "Alacritty" : tmux new-window
+]
+cmd - r [
+  "Alacritty" : tmux send-keys -R; tmux send-keys C-l; tmux clear-history
+]

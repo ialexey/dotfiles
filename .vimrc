@@ -237,6 +237,9 @@ set completeopt=menu,menuone,popup,noselect,noinsert
 let g:updatetime=250
 set updatetime=250
 
+set splitbelow
+set splitright
+
 " let mapleader='\'
 let mapleader=' '
 nnoremap <space> <nop>
@@ -278,11 +281,23 @@ nnoremap <C-l> <C-w>l
 " Yank current file path
 nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
 
+function GoToFileInExistingBuf()
+  let mycurf=expand("<cfile>")
+  wincmd p
+  execute("e ".mycurf)
+  " wincmd p
+endfunction
+nnoremap gs :call GoToFileInExistingBuf()<cr>
+
+nnoremap g/ :Dirvish<cr>
+
 " Trim whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
+
+nmap <C-g> :vert G<cr>
 
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 

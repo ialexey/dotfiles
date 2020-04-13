@@ -1,2 +1,16 @@
-image/*;        ~/imgcat '%s' && read
 text/html; w3m -T text/html -cols 110 -dump %s; copiousoutput
+
+# Images
+image/jpg; ~/bin/view_attachment %s jpg
+image/jpeg; ~/bin/view_attachment %s jpg
+image/pjpeg; ~/bin/view_attachment %s jpg
+image/png; ~/bin/view_attachment %s png
+image/gif; ~/bin/view_attachment %s gif
+video/mp4; ~/bin/view_attachment %s mp4
+application/pdf; ~/bin/view_attachment %s pdf
+application/ics; ~/bin/view_attachment %s ics
+
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; open %s
+
+# Unidentified files
+application/octet-stream; ~/bin/view_attachment.sh %s "-"
