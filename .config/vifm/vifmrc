@@ -300,7 +300,8 @@ fileviewer *.docx docx2txt.pl %f -
 "
 " Or leave it for automatic detection
 "
-" fileviewer *[^/] pygmentize -O style=monokai -f console256 -g
+fileviewer *[^/],.*[^/] env -uCOLORTERM bat --decorations always --color always --terminal-width 105 --pager never %c
+fileviewer .*/,*/ exa -T -L 3 -a --colour always
 
 " Displaying pictures in terminal
 "
