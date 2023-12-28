@@ -137,6 +137,9 @@ end
   Plug 'sirtaj/vim-openscad'
 
   Plug 'stevearc/vim-arduino'
+
+  Plug 'github/copilot.vim'
+  imap <D-]> <Plug>(copilot-next)
 call plug#end()
 
 " We're running Vim, not Vi!
@@ -194,6 +197,10 @@ set smarttab
 
 set hidden
 
+set showcmd
+
+" autocmd FileType c setlocal shiftwidth=4 tabstop=4 noexpandtab
+
 " Use backups
 " Source:
 "   http://stackoverflow.com/a/15317146
@@ -240,18 +247,38 @@ match Whitespace /\s\+/
 if has("gui_macvim")
   set macligatures
 end
-set guifont=Fira\ Code\ Retina:h12
+set guifont=Fira\ Code:h12
 
 set linespace=1
 set cursorline
 
-set completeopt=menu,menuone,popup,noselect,noinsert
+set completeopt=menu,menuone,noselect,noinsert
+if !has('nvim')
+  set completeopt+=popup
+end
+
+if exists("g:neovide")
+  set guifont=Fira\ Code:h12.5
+
+  set mouse=a
+
+  let g:neovide_cursor_animation_length=0
+
+  " enable ⌘+c ⌘+v
+  let g:neovide_input_use_logo = 1
+  map <D-v> "+p<CR>
+  map! <D-v> <C-R>+
+  tmap <D-v> <C-R>+
+  vmap <D-c> "+y<CR>
+end
 
 let g:updatetime=250
 set updatetime=250
 
 set splitbelow
 set splitright
+
+set wildmenu
 
 " let mapleader='\'
 let mapleader=' '
@@ -274,7 +301,9 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 " start full screen
-set fu
+if has('gui_running') && has('gui_macvim')
+  set fu
+end
 
 " set foldmethod=syntax
 " set nofoldenable
@@ -319,10 +348,11 @@ function GoToDecl()
   wincmd p
 endfunction
 
-nnoremap g/ :Dirvish<cr>
+nnoremap g/ :e .<cr>
 
 " Trim whitespace on save
 autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s/\s\+$//e
+autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s///e
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
@@ -339,6 +369,16 @@ inoremap jk <ESC>
 vnoremap $ g_
 nmap <leader>w :w<cr>
 
+" paste without overwriting register
+xnoremap p pgvy
+
+augroup BgHighlight
+  autocmd!
+  autocmd WinEnter * set cursorline
+  autocmd WinLeave * set nocursorline
+augroup END
+
+" COC
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
 autocmd CursorHoldI * silent call CocActionAsync('doHover')
@@ -347,6 +387,29 @@ autocmd CursorHoldI * silent call CocActionAsync('doHover')
 xmap <leader>f :call CocActionAsync('format')<cr>
 nmap <leader>f :call CocActionAsync('format')<cr>
 
-inoremap <silent><expr> <c-n>
-      \ pumvisible() ? "\<C-n>" :
+inoremap <silent><expr> <C-n>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<C-n>" :
       \ coc#refresh()
+inoremap <expr><C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction

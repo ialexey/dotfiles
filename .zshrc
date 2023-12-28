@@ -4,32 +4,33 @@ export SAVEHIST=1000000
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-export PATH="$HOME/Library/Android/sdk/emulator:$PATH"
-export PATH="$HOME/Library/Android/sdk/tools/bin:$PATH"
-export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
-
 export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 export EDITOR="vim"
 
-# Java shit
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jre/jdk/Contents/Home"
-export PATH="$JAVA_HOME/bin:$PATH"
-export PATH="$HOME/.gradle/wrapper/dists/gradle-4.10.3-all/81msde2dx9p4vji0mjgtvxkcb/gradle-4.10.3/bin:$PATH"
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_HOME/build-tools
+export PATH=$PATH:$ANDROID_HOME/emulator
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+# export JAVA_HOME="$(/usr/libexec/java_home -v 11)" # brew install temurin11
 
 export PATH="$HOME/bin:$PATH"
+
+export LESS=R # colorful less
 
 alias ls="exa"
 
 alias g="git"
 alias gst="git status"
 alias gco="git checkout"
-alias gst="git status"
 alias glg="git log"
-alias ggu="git pull"
+alias ggu='git pull origin $(git branch --show-current)'
 alias ggp="git push"
 alias gcp="git cherry-pick"
 alias gm="git merge"
 alias myip="curl ipinfo.io/ip"
+alias nv="neovide --frame None --maximized"
 
 alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}.NetIO"'
 
@@ -62,3 +63,6 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-b
 
 # make Ctrl-O working
 stty discard undef
+
+source ~/.config/private
+source /Users/alexey/.config/op/plugins.sh
