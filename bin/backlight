@@ -1,0 +1,6 @@
+#!/bin/bash
+
+file="/sys/class/backlight/nvidia_wmi_ec_backlight/brightness"
+a=$(cat $file)
+let a=$1+a
+echo $a > $file
