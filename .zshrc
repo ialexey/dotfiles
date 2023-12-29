@@ -34,7 +34,6 @@ alias ggp="git push"
 alias gcp="git cherry-pick"
 alias gm="git merge"
 alias myip="curl ipinfo.io/ip"
-alias nv="neovide --frame None --maximized"
 
 alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}.NetIO"'
 

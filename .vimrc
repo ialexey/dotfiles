@@ -268,21 +268,6 @@ if !has('nvim')
   set completeopt+=popup
 end
 
-if exists("g:neovide")
-  set guifont=Fira\ Code:h12.5
-
-  set mouse=a
-
-  let g:neovide_cursor_animation_length=0
-
-  " enable ⌘+c ⌘+v
-  let g:neovide_input_use_logo = 1
-  map <D-v> "+p<CR>
-  map! <D-v> <C-R>+
-  tmap <D-v> <C-R>+
-  vmap <D-c> "+y<CR>
-end
-
 let g:updatetime=250
 set updatetime=250
 
