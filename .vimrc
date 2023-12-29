@@ -244,12 +244,23 @@ let g:gruvbox_contrast_dark="hard"
 colorscheme gruvbox
 highlight Whitespace guifg='#504945'
 match Whitespace /\s\+/
+
 if has("gui_macvim")
   set macligatures
 end
-set guifont=Fira\ Code:h12
 
-set linespace=1
+if has("gui_gtk3")
+  set guifont=Fira\ Code\ Retina\ 9.5
+  set guioptions -=m " hide menu bar
+  set guioptions -=T " hide toolbar
+  set guioptions -=a " do not copy on visual selection
+  set linespace=1
+  set lazyredraw
+else
+  set guifont=Fira\ Code\ Retina:h12
+  set linespace=1
+end
+
 set cursorline
 
 set completeopt=menu,menuone,noselect,noinsert
@@ -301,7 +312,7 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 " start full screen
-if has('gui_running') && has('gui_macvim')
+if has("gui_macvim")
   set fu
 end
 

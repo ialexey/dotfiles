@@ -1,3 +1,7 @@
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=1000000
 export SAVEHIST=1000000
 
@@ -64,5 +68,6 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-b
 # make Ctrl-O working
 stty discard undef
 
-source ~/.config/private
-source /Users/alexey/.config/op/plugins.sh
+export GTK_THEME=Adwaita:dark
+export GTK2_RC_FILES=/usr/share/themes/Adwaita-dark/gtk-2.0/gtkrc
+export QT_STYLE_OVERRIDE=adwaita-dark
