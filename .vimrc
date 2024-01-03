@@ -162,9 +162,6 @@ filetype plugin on
 " Don't jump to beginning of the line when switching buffers
 set nostartofline
 
-" Yanks go on clipboard instead.
-set clipboard=unnamed
-
 " Show line numbers
 set number
 
@@ -245,20 +242,27 @@ colorscheme gruvbox
 highlight Whitespace guifg='#504945'
 match Whitespace /\s\+/
 
-if has("gui_macvim")
-  set macligatures
-end
-
-if has("gui_gtk3")
+if has("gui_gtk3") " gvim
   set guifont=Fira\ Code\ Retina\ 9.5
   set guioptions -=m " hide menu bar
   set guioptions -=T " hide toolbar
   set guioptions -=a " do not copy on visual selection
   set linespace=1
   set lazyredraw
-else
+
+  let g:netrw_browsex_viewer= "xdg-open"
+
+  " Yanks go on clipboard instead.
+  set clipboard=unnamed,unnamedplus
+elseif has("gui_macvim")
+  set macligatures
   set guifont=Fira\ Code\ Retina:h12
   set linespace=1
+
+  " Yanks go on clipboard instead.
+  set clipboard=unnamed
+
+  set fu
 end
 
 set cursorline
@@ -295,11 +299,6 @@ if has('title') && (has('gui_running') || &title)
     set titlestring+=%h%m%r%w                                         " flags
     set titlestring+=\ -\ %{v:progname}                               " program name
 endif
-
-" start full screen
-if has("gui_macvim")
-  set fu
-end
 
 " set foldmethod=syntax
 " set nofoldenable
@@ -348,7 +347,7 @@ nnoremap g/ :e .<cr>
 
 " Trim whitespace on save
 autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s/\s\+$//e
-autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s///e
+autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s///e
 
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
