@@ -37,6 +37,8 @@ alias myip="curl ipinfo.io/ip"
 
 alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}.NetIO"'
 
+type xdg-open > /dev/null && alias open="xdg-open"
+
 setopt prompt_subst
 PROMPT='%2~ $(git_prompt_info)»%b '
 

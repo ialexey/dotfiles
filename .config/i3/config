@@ -32,15 +32,31 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
+exec --no-startup-id picom
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
 exec --no-startup-id blueman-applet
 
-exec --no-startup-id udiskie tray
+exec --no-startup-id udiskie --tray
 
 exec --no-startup-id sxhkd
+
+exec_always --no-startup-id ~/bin/monitor
+
+exec --no-startup-id keynav
+
+exec --no-startup-id "alacritty -o font.size=9.0 -e tmux new -A -s alexey"
+
+exec --no-startup-id "google-chrome-stable"
+exec --no-startup-id "telegram-desktop"
+exec --no-startup-id "slack"
+
+exec --no-startup-id "xset r rate 240 40"
+
+exec --no-startup-id "feh --bg-scale ~/Documents/wall.jpg"
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -73,10 +89,10 @@ bindsym $cmd+space exec "rofi -modes combi#calc -show combi -combi-modes window#
 bindsym $mod+Tab exec "rofi -show window"
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -87,10 +103,10 @@ bindsym $mod+Right focus right
 bindcode $mod+49 focus left
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -99,10 +115,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+# bindsym $mod+h split toggle
 
 # split in vertical orientation
-bindsym $mod+v split v
+# bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -110,7 +126,8 @@ bindsym $mod+f fullscreen toggle
 # change container layout (stacked, tabbed, toggle split)
 # bindsym $mod+w layout stacking
 bindsym $mod+s layout tabbed
-bindsym $mod+e layout toggle split
+# bindsym $mod+e layout toggle split
+bindsym $mod+e split toggle
 
 # toggle tiling / floating
 bindsym $mod+Shift+d floating toggle
@@ -121,7 +138,7 @@ bindsym $mod+Shift+s sticky toggle
 #bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -138,6 +155,17 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+workspace 1  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 2  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 3  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 4  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 5  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 6  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 7  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 8  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 9  output DisplayPort-0 eDP-1-1 eDP-1
+workspace 10 output DisplayPort-0 eDP-1-1 eDP-1
 
 # switch to workspace
 bindsym $cmd+1 workspace number $ws1
@@ -197,33 +225,63 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+mode "nobinds" {
+  # switch to workspace
+  bindsym $cmd+1 workspace number $ws1
+  bindsym $cmd+2 workspace number $ws2
+  bindsym $cmd+3 workspace number $ws3
+  bindsym $cmd+4 workspace number $ws4
+  bindsym $cmd+5 workspace number $ws5
+  bindsym $cmd+6 workspace number $ws6
+  bindsym $cmd+7 workspace number $ws7
+  bindsym $cmd+8 workspace number $ws8
+  bindsym $cmd+9 workspace number $ws9
+  bindsym $cmd+0 workspace number $ws10
+
+  bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
+
+  bindcode $mod+47 mode "default"
+}
+# $mod+;
+bindcode $mod+47 mode "nobinds"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
         status_command i3status-rs
         position top
-        output DP-2
+        output DisplayPort-0
         output eDP-1-1
         output eDP-1
-        tray_output DP-2
+        tray_output DisplayPort-0
         tray_output eDP-1-1
         tray_output eDP-1
 }
 
-for_window [workspace="4"] floating enable
+for_window [workspace="4"] tabbed enable
 for_window [workspace="2"] tabbed enable
+
+gaps inner 5
+smart_gaps on
 
 # bindsym $ctrl+t [class="Telegram"] focus
 bindsym $ctrl+s [class="Slack"] focus
+
+default_border pixel 0
+default_floating_border pixel 0
 
 bindsym $mod+Shift+Return exec "alacritty -o font.size=10.0 -o font.offset.y=2"
 
 focus_follows_mouse no
 
 bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
+bindsym $mod+o exec "source ~/.zshrc && ocr"
+bindsym $mod+$ctrl+e exec "source ~/.zshrc && scr"
 
 assign [class="Telegram"] 4
 assign [class="Slack"] 4
-assign [class="zoom"] 4
+assign [class="zoom"] 5
 assign [class="chrome"] 3
 assign [class="Gvim"] 2
+assign [class="Qemu-system-x86_64"] 5
+assign [class="steam"] 4

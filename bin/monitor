@@ -1,0 +1,3 @@
+#!/bin/bash
+
+xrandr --listmonitors | rg DP-2 > /dev/null && xrandr --output DP-2 --primary --right-of eDP-1-1

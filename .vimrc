@@ -243,6 +243,9 @@ highlight Whitespace guifg='#504945'
 match Whitespace /\s\+/
 
 if has("gui_gtk3") " gvim
+  " laptop
+  " set guifont=Fira\ Code\ Retina\ 8.7
+  " ultrafine
   set guifont=Fira\ Code\ Retina\ 9.5
   set guioptions -=m " hide menu bar
   set guioptions -=T " hide toolbar
