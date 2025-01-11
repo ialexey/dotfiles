@@ -1,0 +1,6 @@
+#!/bin/bash
+
+a=$(sudo ddcutil getvcp 10 -t | awk '{print $4}')
+let a=$1+a
+sudo ddcutil setvcp 10 $a > /dev/null
+echo $a

@@ -52,16 +52,19 @@ exec --no-startup-id "alacritty -o font.size=9.0 -e tmux new -A -s alexey"
 
 exec --no-startup-id "google-chrome-stable"
 exec --no-startup-id "telegram-desktop"
-exec --no-startup-id "slack"
+# exec --no-startup-id "slack"
 
 exec --no-startup-id "xset r rate 240 40"
+exec --no-startup-id "xset s off -dpms"
 
 exec --no-startup-id "feh --bg-scale ~/Documents/wall.jpg"
 
+exec --no-startup-id "lxsession"
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
@@ -251,11 +254,19 @@ bar {
         status_command i3status-rs
         position top
         output DisplayPort-0
+        output DisplayPort-3
         output eDP-1-1
         output eDP-1
+        output HDMI-2
+        output HDMI-1
+        output HDMI-0
         tray_output DisplayPort-0
+        tray_output DisplayPort-3
         tray_output eDP-1-1
         tray_output eDP-1
+        tray_output HDMI-2
+        tray_output HDMI-1
+        tray_output HDMI-0
 }
 
 for_window [workspace="4"] tabbed enable
@@ -275,8 +286,8 @@ bindsym $mod+Shift+Return exec "alacritty -o font.size=10.0 -o font.offset.y=2"
 focus_follows_mouse no
 
 bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
-bindsym $mod+o exec "source ~/.zshrc && ocr"
-bindsym $mod+$ctrl+e exec "source ~/.zshrc && scr"
+bindsym $mod+o exec "~/bin/ocr"
+bindsym $mod+$ctrl+e exec "~/bin/scr"
 
 assign [class="Telegram"] 4
 assign [class="Slack"] 4

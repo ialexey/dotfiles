@@ -16,31 +16,54 @@ bat_charging = "|^| "
 block = "cpu"
 
 [[block]]
-block = "nvidia_gpu"
+block = "custom"
+command = "sensors | rg fan1 | awk '{print $2 \" \" $3}'"
+interval = 2
+
+[[block]]
+block = "custom"
+command = "sensors | rg fan3 | awk '{print $2 \" \" $3}'"
+interval = 2
+
+[[block]]
+block = "amd_gpu"
 
 [[block]]
 block = "temperature"
 
-[[block]]
-block = "battery"
+# [[block]]
+# block = "battery"
+
+# [[block]]
+# block = "backlight"
+# [[block.click]]
+# button = "down"
+# action = "brightness_up"
+# [[block.click]]
+# button = "up"
+# action = "brightness_down"
 
 [[block]]
-block = "backlight"
+block = "custom"
+command = "~/bin/ddcbacklight"
+format = " $text % "
+interval = 30
 [[block.click]]
-button = "down"
-action = "brightness_up"
+button = "left"
+cmd = "~/bin/ddcbacklight 5"
 [[block.click]]
-button = "up"
-action = "brightness_down"
+button = "right"
+cmd = "~/bin/ddcbacklight -5"
 
-[[block]]
-block = "xrandr"
-[[block.click]]
-button = "down"
-action = "brightness_up"
-[[block.click]]
-button = "up"
-action = "brightness_down"
+# [[block]]
+# block = "xrandr"
+# format = "   "
+# [[block.click]]
+# button = "down"
+# action = "brightness_up"
+# [[block.click]]
+# button = "up"
+# action = "brightness_down"
 
 [[block]]
 block = "disk_space"
