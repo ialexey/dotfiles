@@ -62,7 +62,7 @@ function gcbd() {
 }
 
 eval "$(rbenv init -)"
-eval "$(nodenv init -)"
+# eval "$(nodenv init -)"
 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-build/issues/1385
 

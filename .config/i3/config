@@ -48,7 +48,7 @@ exec_always --no-startup-id ~/bin/monitor
 
 exec --no-startup-id keynav
 
-exec --no-startup-id "alacritty -o font.size=9.0 -e tmux new -A -s alexey"
+exec --no-startup-id "tmux new -d -s alexey && ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && alacritty -o font.size=9.0 -e tmux attach -t alexey"
 
 exec --no-startup-id "google-chrome-stable"
 exec --no-startup-id "telegram-desktop"
@@ -76,7 +76,8 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $ctrl+Return exec i3-sensible-terminal
+# bindsym $ctrl+Return exec i3-sensible-terminal
+bindsym $ctrl+Return exec alacritty -o font.size=9.0
 
 # kill focused window
 bindsym $mod+q kill
@@ -281,7 +282,7 @@ bindsym $ctrl+s [class="Slack"] focus
 default_border pixel 0
 default_floating_border pixel 0
 
-bindsym $mod+Shift+Return exec "alacritty -o font.size=10.0 -o font.offset.y=2"
+bindsym $mod+Shift+Return exec "alacritty -o font.size=9.0 -e tmux new -A -s alexey"
 
 focus_follows_mouse no
 
