@@ -40,7 +40,13 @@ alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t
 type xdg-open > /dev/null && alias open="xdg-open"
 
 setopt prompt_subst
-PROMPT='%2~ $(git_prompt_info)»%b '
+if $HOST == 'archmini'
+then
+  autoload -U colors && colors
+  PROMPT='%{$fg[red]%}[$HOST]%{$reset_color%} %2~ $(git_prompt_info)»%b '
+else
+  PROMPT='%2~ $(git_prompt_info)»%b '
+fi
 
 autoload -U compinit && compinit
 # highlight complete item on tab
