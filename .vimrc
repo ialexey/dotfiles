@@ -242,14 +242,30 @@ colorscheme gruvbox
 highlight Whitespace guifg='#504945'
 match Whitespace /\s\+/
 
-if has("gui_gtk3") " gvim
-  " laptop
-  " set guifont=Fira\ Code\ Retina\ 8.7
-  " ultrafine
-  set guifont=Fira\ Code\ Retina\ 9.5
+let g:terminal_ansi_colors = [
+  \'#1d2021', '#fb4934', '#98971A', '#D79921',
+  \'#83a598', '#B16286', '#689D6A', '#ebdbb2',
+  \'#fb4934', '#b8bb26', '#fabd2f', '#83a598',
+  \'#d3869b', '#8ec07c', '#fe8019', '#FBF1C7' ]
+
+highlight Terminal guibg='#1d2021'
+highlight Terminal guifg='#ebdbb2'
+
+if has("gui_gtk3")
   set guioptions -=m " hide menu bar
   set guioptions -=T " hide toolbar
   set guioptions -=a " do not copy on visual selection
+  set guifont=Fira\ Code\ Retina\ 9.5
+end
+
+if has("nvim")
+  set guifont=Fira\ Code\ Retina:h9.5
+end
+
+if has("gui_gtk3")|| has("nvim") " gvim
+  " laptop
+  " set guifont=Fira\ Code\ Retina\ 8.7
+  " ultrafine
   set linespace=1
   set lazyredraw
 

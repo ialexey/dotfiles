@@ -18,15 +18,15 @@ block = "cpu"
 [[block]]
 block = "custom"
 command = "sensors | rg fan1 | awk '{print $2 \" \" $3}'"
-interval = 2
+interval = 1
 
 [[block]]
 block = "custom"
 command = "sensors | rg fan3 | awk '{print $2 \" \" $3}'"
-interval = 2
+interval = 1
 
 [[block]]
-block = "amd_gpu"
+block = "nvidia_gpu"
 
 [[block]]
 block = "temperature"

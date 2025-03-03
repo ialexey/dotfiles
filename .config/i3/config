@@ -55,9 +55,9 @@ exec --no-startup-id "telegram-desktop"
 # exec --no-startup-id "slack"
 
 exec --no-startup-id "xset r rate 240 40"
-exec --no-startup-id "xset s off -dpms"
+# exec --no-startup-id "xset s off -dpms"
 
-exec --no-startup-id "feh --bg-scale ~/Documents/wall.jpg"
+exec --no-startup-id "feh --bg-scale ~/Documents/walltux.jpg"
 
 exec --no-startup-id "lxsession"
 
@@ -252,22 +252,30 @@ bindcode $mod+47 mode "nobinds"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status-rs
-        position top
-        output DisplayPort-0
-        output DisplayPort-3
-        output eDP-1-1
-        output eDP-1
-        output HDMI-2
-        output HDMI-1
-        output HDMI-0
-        tray_output DisplayPort-0
-        tray_output DisplayPort-3
-        tray_output eDP-1-1
-        tray_output eDP-1
-        tray_output HDMI-2
-        tray_output HDMI-1
-        tray_output HDMI-0
+  status_command i3status-rs
+  position top
+  output primary
+  tray_output primary
+  output DisplayPort-0
+  output DisplayPort-1
+  output DisplayPort-3
+  output eDP-1-1
+  output eDP-1
+  output HDMI-2
+  output HDMI-1
+  output HDMI-0
+  output DP-0
+  output HDMI-A-0
+  tray_output DisplayPort-0
+  tray_output DisplayPort-1
+  tray_output DisplayPort-3
+  tray_output eDP-1-1
+  tray_output eDP-1
+  tray_output HDMI-2
+  tray_output HDMI-1
+  tray_output HDMI-0
+  tray_output DP-0
+  tray_output HDMI-A-0
 }
 
 for_window [workspace="4"] tabbed enable
