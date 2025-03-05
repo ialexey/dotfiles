@@ -265,7 +265,7 @@ if has("nvim")
   set guifont=Fira\ Code\ Retina:h9.5
 
   if exists("g:neovide")
-    set guifont=Fira\ Code\ Retina:h10
+    set guifont=Fira\ Code\ Retina:h9.5
   end
 end
 
