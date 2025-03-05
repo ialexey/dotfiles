@@ -23,7 +23,11 @@ export PATH="$HOME/bin:$PATH"
 
 export LESS=R # colorful less
 
-alias ls="exa"
+if type eza > /dev/null; then
+  alias ls="eza"
+else
+  echo "\033[0;31meza is not installed\033[0m"
+fi
 
 alias g="git"
 alias gst="git status"
@@ -34,6 +38,7 @@ alias ggp="git push"
 alias gcp="git cherry-pick"
 alias gm="git merge"
 alias myip="curl ipinfo.io/ip"
+alias ss="sudo systemctl"
 
 alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}.NetIO"'
 
@@ -66,7 +71,7 @@ function gcbd() {
   gcb $(dasherize $1)
 }
 
-eval "$(rbenv init -)"
+type rbenv > /dev/null && eval "$(rbenv init -)"
 # eval "$(nodenv init -)"
 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-build/issues/1385
