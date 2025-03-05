@@ -140,8 +140,6 @@ end
 
   Plug 'github/copilot.vim'
   imap <D-]> <Plug>(copilot-next)
-
-  Plug 'jasonccox/vim-wayland-clipboard'
 call plug#end()
 
 " We're running Vim, not Vi!
@@ -260,12 +258,15 @@ if has("gui_gtk3")
   " laptop
   " set guifont=Fira\ Code\ Retina\ 8.7
   " ultrafine
-  " set guifont=Fira\ Code\ Retina\ 9.5
-  set guifont=Fira\ Code\ Retina\ 7.7
+  set guifont=Fira\ Code\ Retina\ 9.5
 end
 
 if has("nvim")
   set guifont=Fira\ Code\ Retina:h9.5
+
+  if exists("g:neovide")
+    set guifont=Fira\ Code\ Retina:h10
+  end
 end
 
 if has("gui_gtk3")|| has("nvim") " gvim

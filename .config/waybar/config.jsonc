@@ -18,24 +18,31 @@
     "hyprland/mode"
   ],
   "modules-center": [
-    "hyprland/window"
+    // "hyprland/window"
+    "clock#date",
+    "clock#time"
   ],
   "modules-right": [
     "network",
     "custom/sep",
-    "memory",
-    "custom/sep",
     "cpu",
+    "custom/sep",
+    "custom/fan1",
+    "custom/sep",
+    "custom/fan2",
+    "custom/sep",
+    "memory",
     "custom/sep",
     // "temperature",
     "pulseaudio",
     // "custom/sep",
-    // "custom/keyboard-layout",
     //"custom/sep",
     // "battery",
     "custom/sep",
-    "clock#date",
-    "clock#time",
+    // "clock#date",
+    // "clock#time",
+    // "custom/sep",
+    "custom/brightness",
     "custom/sep",
     "hyprland/language",
     "tray"
@@ -64,13 +71,14 @@
   },
   "clock#time": {
     "interval": 1,
-    "format": ", {:%H:%M:%S}",
+    "format": " {:%H:%M}",
     "tooltip": false
   },
   "clock#date": {
     "interval": 10,
-    "format": "{:%e %b %Y}", // Icon: calendar-alt
-    "tooltip-format": ",{:%e %B %Y}"
+    "format": "{:%e %b %Y}", // Icon: calendar-alt
+    "tooltip-format": "{:%e %B %Y}",
+    "tooltip": false
   },
   "cpu": {
     "interval": 5,
@@ -79,15 +87,6 @@
       "warning": 70,
       "critical": 90
     }
-  },
-  "custom/keyboard-layout": {
-    "exec": "hyprlandmsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
-    // Interval set only as a fallback, as the value is updated by signal
-    "interval": 30,
-    "format": "  {}", // Icon: keyboard
-    // Signal sent by Sway key binding (~/.config/hyprland/key-bindings)
-    "signal": 1, // SIGHUP
-    "tooltip": false
   },
   "memory": {
     "interval": 5,
@@ -132,7 +131,7 @@
     "reverse-mouse-scrolling": true,
     "format": "{icon}  {volume}%",
     "format-bluetooth": "{icon}  {volume}%",
-    "format-muted": "",
+    "format-muted": " muted",
     "format-icons": {
       "headphones": "",
       "handsfree": "",
@@ -162,11 +161,35 @@
   //   "tooltip": true
   // },
   "hyprland/language": {
-    "format": "{}"
+    "format": "{}",
+    "format-en": "en",
+    "format-ru": "ru"
   },
   "tray": {
     "icon-size": 17,
     "spacing": 10
+  },
+  "custom/brightness": {
+    "format": "{icon} {percentage}%",
+    "format-icons": [
+      "\uDB80\uDCDE",
+      "\uDB80\uDCDF",
+      "\uDB80\uDCE0"
+    ],
+    "return-type": "json",
+    "exec": "ddcutil getvcp 10 | grep -oP 'current.*?=\\s*\\K[0-9]+' | { read x; echo '{\"percentage\":'${x}'}'; }",
+    "on-click": "ddcutil --noverify setvcp 10 + 5",
+    "on-click-right": "ddcutil --noverify setvcp 10 - 5",
+    "interval": 4,
+    "tooltip": false
+  },
+  "custom/fan1": {
+    "exec": "sensors | rg fan1 | awk '{print $2 \" \" $3}'",
+    "interval": 3
+  },
+  "custom/fan2": {
+    "exec": "sensors | rg fan3 | awk '{print $2 \" \" $3}'",
+    "interval": 3
   },
   "custom/sep": {
     "format": "|",

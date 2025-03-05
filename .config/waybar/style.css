@@ -80,6 +80,9 @@ tooltip label {
 #battery,
 #network,
 #language,
+#custom-fan1,
+#custom-fan2,
+#custom-brightness,
 #custom-power {
   opacity: 1;
   color: @module-fg;
