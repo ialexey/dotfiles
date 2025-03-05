@@ -553,6 +553,7 @@ nnoremap <a-i> :sync<cr>
 nnoremap <a-o> :sync %c<cr>
 
 nnoremap - h
+nnoremap q :quit<cr>
 " Swap panes (uncomment if you don't need builtin behaviour of Ctrl-U)
 " nnoremap <c-u> <c-w>x
 

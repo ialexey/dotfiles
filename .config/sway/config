@@ -32,7 +32,7 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
-exec --no-startup-id picom
+# exec --no-startup-id picom
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -54,7 +54,7 @@ exec --no-startup-id "google-chrome-stable"
 exec --no-startup-id "telegram-desktop"
 # exec --no-startup-id "slack"
 
-exec --no-startup-id "xset r rate 240 40"
+# exec --no-startup-id "xset r rate 240 40"
 # exec --no-startup-id "xset s off -dpms"
 
 exec --no-startup-id "feh --bg-scale ~/Documents/walltux.jpg"
@@ -73,7 +73,7 @@ floating_modifier $mod
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
+# tiling_drag modifier titlebar
 
 # start a terminal
 # bindsym $ctrl+Return exec i3-sensible-terminal
@@ -85,7 +85,7 @@ bindsym $mod+q kill
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-bindsym $cmd+space exec "rofi -modes combi#calc -show combi -combi-modes window#drun#run"
+bindsym $cmd+space exec "rofi -modes combi#calc -show combi -combi-modes window#drun#run -theme gruvbox-dark"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
@@ -160,16 +160,19 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-workspace 1  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 2  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 3  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 4  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 5  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 6  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 7  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 8  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 9  output DisplayPort-0 eDP-1-1 eDP-1
-workspace 10 output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 1  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 2  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 3  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 4  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 5  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 6  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 7  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 8  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 9  output DisplayPort-0 eDP-1-1 eDP-1
+# workspace 10 output DisplayPort-0 eDP-1-1 eDP-1
+
+# output DP-4 scale 1.7 res 3840x2160 bg ~/Documents/wall.jpg stretch
+output * scale 2 mode 3840x2160 pos 100  10 bg /home/alexey/Documents/walltux.jpg stretch
 
 # switch to workspace
 bindsym $cmd+1 workspace number $ws1
@@ -251,31 +254,21 @@ bindcode $mod+47 mode "nobinds"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+# bar swaybar_command waybar
+
 bar {
-  status_command i3status-rs
-  position top
-  output primary
-  tray_output primary
-  output DisplayPort-0
-  output DisplayPort-1
-  output DisplayPort-3
-  output eDP-1-1
-  output eDP-1
-  output HDMI-2
-  output HDMI-1
-  output HDMI-0
-  output DP-0
-  output HDMI-A-0
-  tray_output DisplayPort-0
-  tray_output DisplayPort-1
-  tray_output DisplayPort-3
-  tray_output eDP-1-1
-  tray_output eDP-1
-  tray_output HDMI-2
-  tray_output HDMI-1
-  tray_output HDMI-0
-  tray_output DP-0
-  tray_output HDMI-A-0
+        status_command i3status-rs
+        position top
+        # output DisplayPort-0
+        # output DisplayPort-3
+        # output eDP-1-1
+        # output eDP-1
+        # output HDMI-2
+        # tray_output DisplayPort-0
+        # tray_output DisplayPort-3
+        # tray_output eDP-1-1
+        # tray_output eDP-1
+        # tray_output HDMI-2
 }
 
 for_window [workspace="4"] tabbed enable
@@ -305,3 +298,16 @@ assign [class="chrome"] 3
 assign [class="Gvim"] 2
 assign [class="Qemu-system-x86_64"] 5
 assign [class="steam"] 4
+for_window [app_id='org.telegram.desktop'] workspace 4
+
+input "5426:195:Razer_Razer_DeathAdder_V3_Pro" {
+    tap enabled
+    natural_scroll enabled
+    accel_profile "flat" # disable mouse acceleration (enabled by default; to set it manually, use "adaptive" instead of "flat")
+    pointer_accel -0.55 # set mouse sensitivity (between -1 and 1)
+}
+
+input type:keyboard {
+    repeat_delay 240
+    repeat_rate 40
+}

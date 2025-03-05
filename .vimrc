@@ -118,8 +118,8 @@ end
     highlight def link jsxOpenPunct xmlTag
     highlight def link jsxCloseString jsxOpenPunct
 
-  Plug 'justinmk/vim-dirvish'
-    let g:dirvish_mode = ':sort ,^.*[\/],'
+  " Plug 'justinmk/vim-dirvish'
+  "   let g:dirvish_mode = ':sort ,^.*[\/],'
 
   " Plug 'codota/tabnine-vim'
   Plug 'diepm/vim-rest-console'
@@ -140,6 +140,8 @@ end
 
   Plug 'github/copilot.vim'
   imap <D-]> <Plug>(copilot-next)
+
+  Plug 'jasonccox/vim-wayland-clipboard'
 call plug#end()
 
 " We're running Vim, not Vi!
@@ -255,7 +257,11 @@ if has("gui_gtk3")
   set guioptions -=m " hide menu bar
   set guioptions -=T " hide toolbar
   set guioptions -=a " do not copy on visual selection
-  set guifont=Fira\ Code\ Retina\ 9.5
+  " laptop
+  " set guifont=Fira\ Code\ Retina\ 8.7
+  " ultrafine
+  " set guifont=Fira\ Code\ Retina\ 9.5
+  set guifont=Fira\ Code\ Retina\ 7.7
 end
 
 if has("nvim")
@@ -263,9 +269,6 @@ if has("nvim")
 end
 
 if has("gui_gtk3")|| has("nvim") " gvim
-  " laptop
-  " set guifont=Fira\ Code\ Retina\ 8.7
-  " ultrafine
   set linespace=1
   set lazyredraw
 
@@ -362,7 +365,8 @@ function GoToDecl()
   wincmd p
 endfunction
 
-nnoremap g/ :e .<cr>
+nnoremap g/ :Vifm .<cr>
+nnoremap - :Vifm<cr>
 
 " Trim whitespace on save
 autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s/\s\+$//e
