@@ -3,6 +3,7 @@ icons_format = "{icon}"
 [theme]
 theme = "gruvbox-dark"
 [theme.overrides]
+separator = "<span size='11800'></span>"
 # idle_bg = "#123456"
 # idle_fg = "#abcdef"
 

@@ -19,6 +19,7 @@ endif
 
 if has("nvim")
 call plug#begin('~/.local/share/nvim/plugged')
+  Plug 'ellisonleao/gruvbox.nvim'
 else
 call plug#begin('~/.vim/plugged')
 end
