@@ -129,7 +129,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 # bindsym $mod+w layout stacking
-bindsym $mod+s layout tabbed
+bindsym $mod+s layout toggle tabbed split
 # bindsym $mod+e layout toggle split
 bindsym $mod+e split toggle
 
@@ -278,8 +278,8 @@ bar {
   tray_output HDMI-A-0
 }
 
-for_window [workspace="4"] tabbed enable
-for_window [workspace="2"] tabbed enable
+for_window [workspace="4"] layout tabbed
+for_window [workspace="2"] layout tabbed
 
 gaps inner 5
 smart_gaps on
@@ -303,5 +303,7 @@ assign [class="Slack"] 4
 assign [class="zoom"] 5
 assign [class="chrome"] 3
 assign [class="Gvim"] 2
+assign [class="neovide"] 2
 assign [class="Qemu-system-x86_64"] 5
 assign [class="steam"] 4
+assign [class="nekoray"] 4

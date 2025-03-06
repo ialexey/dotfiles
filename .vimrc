@@ -265,7 +265,11 @@ if has("nvim")
   set guifont=Fira\ Code\ Retina:h9.5
 
   if exists("g:neovide")
-    set guifont=Fira\ Code\ Retina:h9.5
+    if empty($WAYLAND_DISPLAY)
+      set guifont=Fira\ Code\ Retina:h9.5
+    else
+      set guifont=Fira\ Code\ Retina:h10.5
+    end
   end
 end
 

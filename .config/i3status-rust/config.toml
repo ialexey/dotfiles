@@ -1,10 +1,10 @@
 icons_format = "{icon}"
 
 [theme]
-theme = "solarized-dark"
+theme = "gruvbox-dark"
 [theme.overrides]
-idle_bg = "#123456"
-idle_fg = "#abcdef"
+# idle_bg = "#123456"
+# idle_fg = "#abcdef"
 
 [icons]
 icons = "none"
@@ -19,6 +19,8 @@ block = "cpu"
 block = "custom"
 command = "sensors | rg fan1 | awk '{print $2 \" \" $3}'"
 interval = 1
+[block.theme_overrides]
+idle_bg = "#101010"
 
 [[block]]
 block = "custom"
@@ -27,6 +29,8 @@ interval = 1
 
 [[block]]
 block = "nvidia_gpu"
+[block.theme_overrides]
+idle_bg = "#101010"
 
 [[block]]
 block = "temperature"
@@ -46,14 +50,16 @@ block = "temperature"
 [[block]]
 block = "custom"
 command = "~/bin/ddcbacklight"
-format = " $text % "
-interval = 30
+format = " 🔆 $text % "
+interval = 10
 [[block.click]]
 button = "left"
 cmd = "~/bin/ddcbacklight 5"
 [[block.click]]
 button = "right"
 cmd = "~/bin/ddcbacklight -5"
+[block.theme_overrides]
+idle_bg = "#101010"
 
 # [[block]]
 # block = "xrandr"
@@ -73,13 +79,15 @@ path = "/"
 # interval = 20
 # warning = 20.0
 # alert = 10.0
-format = " $icon $available.eng(w:2) "
+format = " $icon $used.eng(w:2) / $total.eng(w:2) "
 
 [[block]]
 block = "memory"
 # format = " $icon $mem_total_used_percents.eng(w:2) "
 # format_alt = " $icon_swap $swap_used_percents.eng(w:2) "
-format = "$icon $mem_used.eng(prefix:M,w:4)/$mem_total.eng(prefix:M,w:4)($mem_used_percents.eng(w:2))"
+format = " $icon $mem_used.eng(prefix:M,w:4) / $mem_total.eng(prefix:M,w:4) ($mem_used_percents.eng(w:2)) "
+[block.theme_overrides]
+idle_bg = "#101010"
 
 [[block]]
 block = "sound"
@@ -97,3 +105,5 @@ cmd = "pavucontrol"
 block = "time"
 interval = 5
 format = " $timestamp.datetime(f:'%a %d %b %R') "
+[block.theme_overrides]
+idle_bg = "#101010"

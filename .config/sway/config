@@ -129,7 +129,7 @@ bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 # bindsym $mod+w layout stacking
-bindsym $mod+s layout tabbed
+bindsym $mod+s layout toggle tabbed split
 # bindsym $mod+e layout toggle split
 bindsym $mod+e split toggle
 
@@ -172,7 +172,7 @@ set $ws10 "10"
 # workspace 10 output DisplayPort-0 eDP-1-1 eDP-1
 
 # output DP-4 scale 1.7 res 3840x2160 bg ~/Documents/wall.jpg stretch
-output * scale 2 mode 3840x2160 pos 100  10 bg /home/alexey/Documents/walltux.jpg stretch
+output * scale 2 mode 3840x2160 bg /home/alexey/Documents/walltux.jpg stretch
 
 # switch to workspace
 bindsym $cmd+1 workspace number $ws1
@@ -271,8 +271,8 @@ bar {
         # tray_output HDMI-2
 }
 
-for_window [workspace="4"] tabbed enable
-for_window [workspace="2"] tabbed enable
+for_window [workspace="4"] layout tabbed
+for_window [workspace="2"] layout tabbed
 
 gaps inner 5
 smart_gaps on
@@ -291,14 +291,14 @@ bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbm
 bindsym $mod+o exec "~/bin/ocr"
 bindsym $mod+$ctrl+e exec "~/bin/scr"
 
-assign [class="Telegram"] 4
+assign [app_id="org.telegram.desktop"] 4
 assign [class="Slack"] 4
 assign [class="zoom"] 5
-assign [class="chrome"] 3
+assign [app_id="google-chrome"] 3
 assign [class="Gvim"] 2
+assign [app_id="neovide"] 2
 assign [class="Qemu-system-x86_64"] 5
 assign [class="steam"] 4
-for_window [app_id='org.telegram.desktop'] workspace 4
 
 input "5426:195:Razer_Razer_DeathAdder_V3_Pro" {
     tap enabled
