@@ -425,7 +425,7 @@ filextype */
 " fileviewer *.c,*.h highlight -O ansi -s dante %c
 "
 " Or leave it for automatic detection
-" fileviewer *[^/] pygmentize -O style=monokai -f console256 -g
+fileviewer *[^/] highlight -O xterm256
 
 " Displaying pictures in terminal
 " fileviewer *.jpg,*.png shellpic %c

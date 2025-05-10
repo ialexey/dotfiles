@@ -48,20 +48,6 @@ block = "temperature"
 # button = "up"
 # action = "brightness_down"
 
-[[block]]
-block = "custom"
-command = "~/bin/ddcbacklight"
-format = " 🔆 $text % "
-interval = 10
-[[block.click]]
-button = "left"
-cmd = "~/bin/ddcbacklight 5"
-[[block.click]]
-button = "right"
-cmd = "~/bin/ddcbacklight -5"
-[block.theme_overrides]
-idle_bg = "#101010"
-
 # [[block]]
 # block = "xrandr"
 # format = "   "
@@ -81,14 +67,33 @@ path = "/"
 # warning = 20.0
 # alert = 10.0
 format = " $icon $used.eng(w:2) / $total.eng(w:2) "
+[block.theme_overrides]
+idle_bg = "#101010"
 
 [[block]]
 block = "memory"
 # format = " $icon $mem_total_used_percents.eng(w:2) "
 # format_alt = " $icon_swap $swap_used_percents.eng(w:2) "
 format = " $icon $mem_used.eng(prefix:M,w:4) / $mem_total.eng(prefix:M,w:4) ($mem_used_percents.eng(w:2)) "
+
+[[block]]
+block = "custom"
+command = "~/bin/ddcbacklight"
+format = " 🔆 $text % "
+interval = 10
+[[block.click]]
+button = "left"
+cmd = "~/bin/ddcbacklight 5"
+[[block.click]]
+button = "right"
+cmd = "~/bin/ddcbacklight -5"
+[[block.click]]
+button = "middle"
+cmd = "sudo ddcutil setvcp 10 35 > /dev/null"
 [block.theme_overrides]
 idle_bg = "#101010"
+
+
 
 [[block]]
 block = "sound"
@@ -107,4 +112,4 @@ block = "time"
 interval = 5
 format = " $timestamp.datetime(f:'%a %d %b %R') "
 [block.theme_overrides]
-idle_bg = "#101010"
+idle_bg = "#000000"

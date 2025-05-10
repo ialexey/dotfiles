@@ -20,6 +20,12 @@ endif
 if has("nvim")
 call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ellisonleao/gruvbox.nvim'
+  Plug 'nvim-lualine/lualine.nvim'
+  Plug 'nvimdev/indentmini.nvim'
+
+  Plug 'nvim-lua/plenary.nvim'
+
+  Plug 'mikavilpas/yazi.nvim'
 else
 call plug#begin('~/.vim/plugged')
 end
@@ -29,7 +35,8 @@ end
 
   Plug 'airblade/vim-gitgutter'
 
-  Plug 'bling/vim-airline'
+  if !has("nvim")
+    Plug 'bling/vim-airline'
     " Airline options
     let g:airline#extensions#branch#enabled = 0
     let g:airline_powerline_fonts = 1
@@ -41,6 +48,7 @@ end
       let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr', ':%v'])
     endfunction
     autocmd User AirlineAfterInit call AirlineInit()
+  end
 
   Plug 'junegunn/vim-easy-align'
     " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -77,7 +85,9 @@ end
 
   Plug 'tpope/vim-unimpaired'
 
-  Plug 'morhetz/gruvbox'
+  if !has("nvim")
+    Plug 'morhetz/gruvbox'
+  end
 
   Plug 'tpope/vim-commentary'
 
@@ -237,9 +247,11 @@ if has("termguicolors")
 endif
 
 let macvim_skip_colorscheme=1
-set background=dark
-let g:gruvbox_contrast_dark="hard"
-colorscheme gruvbox
+if !has("nvim")
+  set background=dark
+  let g:gruvbox_contrast_dark="hard"
+  colorscheme gruvbox
+  end
 highlight Whitespace guifg='#504945'
 match Whitespace /\s\+/
 
@@ -371,8 +383,13 @@ function GoToDecl()
   wincmd p
 endfunction
 
-nnoremap g/ :Vifm .<cr>
-nnoremap - :Vifm<cr>
+if (has("nvim"))
+  nnoremap g/ :Yazi cwd<cr>
+  nnoremap - :Yazi<cr>
+else
+  nnoremap g/ :Vifm .<cr>
+  nnoremap - :Vifm<cr>
+endif
 
 " Trim whitespace on save
 autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s/\s\+$//e
@@ -407,9 +424,8 @@ autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
 autocmd CursorHoldI * silent call CocActionAsync('doHover')
 
-" Formatting selected code.
-xmap <leader>f :call CocActionAsync('format')<cr>
-nmap <leader>f :call CocActionAsync('format')<cr>
+xmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
+nmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
 
 inoremap <silent><expr> <C-n>
       \ coc#pum#visible() ? coc#pum#next(1) :
