@@ -1,5 +1,6 @@
 require("gruvbox").setup({
-  contrast = "hard"
+  contrast = "hard",
+  bold = false
 })
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
@@ -7,6 +8,14 @@ vim.cmd([[colorscheme gruvbox]])
 require("indentmini").setup({only_current = true, minlevel = 2})
 vim.cmd.highlight('IndentLineCurrent guifg=#928374')
 vim.cmd.highlight('IndentLine guifg=##1d2021')
+
+require('avante').setup {
+  provider = "copilot"
+}
+
+require('render-markdown').setup({
+  file_types = { "markdown", "Avante" }
+})
 
 require('lualine').setup {
   options = {

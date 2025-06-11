@@ -26,6 +26,24 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'nvim-lua/plenary.nvim'
 
   Plug 'mikavilpas/yazi.nvim'
+
+  " Avante
+  " Deps
+  Plug 'nvim-treesitter/nvim-treesitter'
+  Plug 'stevearc/dressing.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'MunifTanjim/nui.nvim'
+  Plug 'MeanderingProgrammer/render-markdown.nvim'
+
+  " Optional deps
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'nvim-tree/nvim-web-devicons' "or Plug 'echasnovski/mini.icons'
+  Plug 'HakonHarnes/img-clip.nvim'
+  Plug 'zbirenbaum/copilot.lua'
+
+  " Yay, pass source=true if you want to build from source
+  Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
+  " Avante end
 else
 call plug#begin('~/.vim/plugged')
 end
@@ -59,11 +77,11 @@ end
 
   Plug 'terryma/vim-multiple-cursors'
 
-  Plug 'kien/rainbow_parentheses.vim'
-    au VimEnter * RainbowParenthesesToggle
-    au Syntax * RainbowParenthesesLoadRound
-    au Syntax * RainbowParenthesesLoadSquare
-    au Syntax * RainbowParenthesesLoadBraces
+  " Plug 'kien/rainbow_parentheses.vim'
+  "   au VimEnter * RainbowParenthesesToggle
+  "   au Syntax * RainbowParenthesesLoadRound
+  "   au Syntax * RainbowParenthesesLoadSquare
+  "   au Syntax * RainbowParenthesesLoadBraces
 
   " Plug 'jiangmiao/auto-pairs'
   "   let g:AutoPairsMultilineClose = 0
@@ -453,3 +471,37 @@ function! ShowDocumentation()
     call feedkeys('K', 'in')
   endif
 endfunction
+
+function! MoveWindowToDirection(direction)
+  let cur_win = win_getid()
+  let cur_buf = bufnr('%')
+  let cur_view = winsaveview()
+
+  " Try to go to target window
+  execute 'wincmd ' . a:direction
+  let target_win = win_getid()
+
+  if target_win == cur_win
+    echo "No window in direction: " . a:direction
+    return
+  endif
+
+  let target_buf = bufnr('%')
+  let target_view = winsaveview()
+
+  " Swap buffers
+  execute 'buffer' cur_buf
+  call winrestview(cur_view)
+
+  call win_gotoid(cur_win)
+  execute 'buffer' target_buf
+  call winrestview(target_view)
+
+  call win_gotoid(target_win)
+endfunction
+
+" Remap C-w H/J/K/L to swap splits like helix does
+nnoremap <silent> <C-w>H :call MoveWindowToDirection('h')<CR>
+nnoremap <silent> <C-w>J :call MoveWindowToDirection('j')<CR>
+nnoremap <silent> <C-w>K :call MoveWindowToDirection('k')<CR>
+nnoremap <silent> <C-w>L :call MoveWindowToDirection('l')<CR>
