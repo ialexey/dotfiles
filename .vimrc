@@ -17,56 +17,28 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-if has("nvim")
-call plug#begin('~/.local/share/nvim/plugged')
-  Plug 'ellisonleao/gruvbox.nvim'
-  Plug 'nvim-lualine/lualine.nvim'
-  Plug 'nvimdev/indentmini.nvim'
-
-  Plug 'nvim-lua/plenary.nvim'
-
-  Plug 'mikavilpas/yazi.nvim'
-
-  " Avante
-  " Deps
-  Plug 'nvim-treesitter/nvim-treesitter'
-  Plug 'stevearc/dressing.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'MunifTanjim/nui.nvim'
-  Plug 'MeanderingProgrammer/render-markdown.nvim'
-
-  " Optional deps
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'nvim-tree/nvim-web-devicons' "or Plug 'echasnovski/mini.icons'
-  Plug 'HakonHarnes/img-clip.nvim'
-  Plug 'zbirenbaum/copilot.lua'
-
-  " Yay, pass source=true if you want to build from source
-  Plug 'yetone/avante.nvim', { 'branch': 'main', 'do': 'make' }
-  " Avante end
-else
+if !has("nvim")
 call plug#begin('~/.vim/plugged')
-end
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   Plug 'tpope/vim-surround'
 
+  Plug 'vifm/vifm.vim'
+
   Plug 'airblade/vim-gitgutter'
 
-  if !has("nvim")
-    Plug 'bling/vim-airline'
-    " Airline options
-    let g:airline#extensions#branch#enabled = 0
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#hunks#enabled = 0
-    function! AirlineInit()
-      let g:airline_symbols.linenr = ''
-      let g:airline_symbols.maxlinenr = ''
-      let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr', ':%v'])
-    endfunction
-    autocmd User AirlineAfterInit call AirlineInit()
-  end
+  Plug 'bling/vim-airline'
+  " Airline options
+  let g:airline#extensions#branch#enabled = 0
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#hunks#enabled = 0
+  function! AirlineInit()
+    let g:airline_symbols.linenr = ''
+    let g:airline_symbols.maxlinenr = ''
+    let g:airline_section_z = airline#section#create(['linenr', 'maxlinenr', ':%v'])
+  endfunction
+  autocmd User AirlineAfterInit call AirlineInit()
 
   Plug 'junegunn/vim-easy-align'
     " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -76,15 +48,6 @@ end
     nmap ga <Plug>(EasyAlign)
 
   Plug 'terryma/vim-multiple-cursors'
-
-  " Plug 'kien/rainbow_parentheses.vim'
-  "   au VimEnter * RainbowParenthesesToggle
-  "   au Syntax * RainbowParenthesesLoadRound
-  "   au Syntax * RainbowParenthesesLoadSquare
-  "   au Syntax * RainbowParenthesesLoadBraces
-
-  " Plug 'jiangmiao/auto-pairs'
-  "   let g:AutoPairsMultilineClose = 0
 
   Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
@@ -147,29 +110,14 @@ end
     highlight def link jsxOpenPunct xmlTag
     highlight def link jsxCloseString jsxOpenPunct
 
-  " Plug 'justinmk/vim-dirvish'
-  "   let g:dirvish_mode = ':sort ,^.*[\/],'
-
-  " Plug 'codota/tabnine-vim'
   Plug 'diepm/vim-rest-console'
 
   Plug 'christoomey/vim-tmux-navigator'
 
-  " Plug 'Konfekt/FastFold'
-
-  Plug 'vifm/vifm.vim'
-
-  Plug 'dhruvasagar/vim-table-mode'
-
-  Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
-
-  Plug 'sirtaj/vim-openscad'
-
-  Plug 'stevearc/vim-arduino'
-
   Plug 'github/copilot.vim'
   imap <D-]> <Plug>(copilot-next)
 call plug#end()
+endif
 
 " We're running Vim, not Vi!
 set nocompatible
@@ -342,8 +290,9 @@ set wildmenu
 let mapleader=' '
 nnoremap <space> <nop>
 
-nnoremap <leader>p :<C-u>CocList outline<cr>
+if !has("nvim")
 nnoremap <leader>b :CtrlPBuffer<CR>
+endif
 
 " No scroll bar in GUI
 if has('gui_running')
@@ -401,23 +350,49 @@ function GoToDecl()
   wincmd p
 endfunction
 
-if (has("nvim"))
-  nnoremap g/ :Yazi cwd<cr>
-  nnoremap - :Yazi<cr>
-else
+if (!has("nvim"))
   nnoremap g/ :Vifm .<cr>
   nnoremap - :Vifm<cr>
 endif
 
-" Trim whitespace on save
-autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s/\s\+$//e
-autocmd BufWritePre * if index(['mail'], &ft) < 0 | %s///e
 
+if (!has("nvim"))
+" COC
+nnoremap <leader>p :<C-u>CocList outline<cr>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gs :call GoToDecl()<cr>
 nmap <leader>s :call CocActionAsync('showSignatureHelp')<cr>
 nmap <leader>h :call CocActionAsync('doHover')<cr>
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
+autocmd CursorHoldI * silent call CocActionAsync('doHover')
+xmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
+nmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
+
+inoremap <silent><expr> <C-n>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<C-n>" :
+      \ coc#refresh()
+inoremap <expr><C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+" END COC
+endif
 
 " compile and execute current C file
 nmap <leader>r :!gcc -Wall %:t -o %:t:r && ./%:t:r<cr>
@@ -437,39 +412,9 @@ augroup BgHighlight
   autocmd WinLeave * set nocursorline
 augroup END
 
-" COC
-autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
-autocmd CursorHoldI * silent call CocActionAsync('doHover')
-
-xmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
-nmap <silent><leader>f :call CocAction('format') \| call CocAction('runCommand', 'editor.action.organizeImport')<cr>
-
-inoremap <silent><expr> <C-n>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<C-n>" :
-      \ coc#refresh()
-inoremap <expr><C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-" Make <CR> to accept selected completion item or notify coc.nvim to format
-" <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call ShowDocumentation()<CR>
-
-function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
 endfunction
 
 function! MoveWindowToDirection(direction)
