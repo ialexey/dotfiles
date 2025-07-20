@@ -2,10 +2,12 @@ require("lazy").setup({
   checker = { enabled = true },
   -- LSP and completion
   {
-    { "williamboman/mason.nvim", config = true },
-    { "williamboman/mason-lspconfig.nvim", config = true, },
     { 
       "neovim/nvim-lspconfig",
+      dependencies = {
+        { "williamboman/mason.nvim", config = true },
+        -- { "williamboman/mason-lspconfig.nvim", config = true, },
+      },
       config = function()
         local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")
@@ -21,6 +23,51 @@ require("lazy").setup({
             },
           },
         })
+
+        lspconfig.ts_ls.setup({
+          settings = {
+            javascript = {
+              inlayHints = {
+                includeInlayEnumMemberValueHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayVariableTypeHints = false,
+              },
+            },
+            typescript = {
+              inlayHints = {
+                includeInlayEnumMemberValueHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayVariableTypeHints = false,
+              },
+            },
+          }
+        })
+
+        lspconfig.gopls.setup({
+          settings = {
+            gopls = {
+              hints = {
+                rangeVariableTypes = true,
+                parameterNames = true,
+                constantValues = true,
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                functionTypeParameters = true,
+              },
+            }
+          }
+        })
+
+        vim.lsp.inlay_hint.enable(true)
 
         local keymap = vim.keymap.set
         local opts = { noremap = true, silent = true }
@@ -41,7 +88,7 @@ require("lazy").setup({
         local cmp = require("cmp")
         cmp.setup({
           mapping = cmp.mapping.preset.insert({
-            ["<CR>"] = cmp.mapping.confirm({ select = true }),
+            ["<CR>"] = cmp.mapping.confirm({ select = false }),
           }),
           sources = cmp.config.sources({
             { name = "nvim_lsp" },
@@ -132,7 +179,7 @@ require("lazy").setup({
           additional_vim_regex_highlighting = false,
         },
         indent = {
-          enable = true,
+          enable = false,
         },
         textobjects = {
           select = {
@@ -147,7 +194,8 @@ require("lazy").setup({
               ["ab"] = "@block.outer",
               ["ir"] = "@block.inner",
               ["ar"] = "@block.outer",
-            }
+            },
+            include_surrounding_whitespace = true,
           },
         },
       })
@@ -167,6 +215,7 @@ require("lazy").setup({
     end
   },
   { "tpope/vim-rhubarb" }, -- GBrowse
+  -- lazy.nvim
 
   -- Text editing
   { "tpope/vim-surround" },
@@ -338,6 +387,21 @@ require("lazy").setup({
       },
     },
   },
+
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {
+      strategies = {
+        chat = { adapter = "copilot" },
+        inline = { adapter = "copilot" },
+      },
+    },
+  },
+
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
@@ -348,7 +412,7 @@ require("lazy").setup({
       provider = "copilot",
       providers = {
         copilot = {
-          model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+          model = "gpt-4.1", -- your desired model (or use gpt-4o, etc.)
           extra_request_body = {
             timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
             temperature = 0.75,
@@ -356,6 +420,9 @@ require("lazy").setup({
             --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
         },
+      },
+      selector = {
+        provider = "telescope", -- or "file_selector" for file selector
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

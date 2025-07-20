@@ -25,6 +25,8 @@ vim.cmd([[
   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
 ]])
 
+vim.opt.fillchars:append("diff:╱")
+
 if vim.g.neovide then
   vim.g.neovide_position_animation_length = 0
   vim.g.neovide_cursor_animation_length = 0.00

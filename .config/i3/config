@@ -50,9 +50,10 @@ exec --no-startup-id keynav
 
 exec --no-startup-id "tmux new -d -s alexey && ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && alacritty -o font.size=9.0 -e tmux attach -t alexey"
 
-exec --no-startup-id "google-chrome-stable"
+# exec --no-startup-id "google-chrome-stable"
+exec --no-startup-id "firefox"
 exec --no-startup-id "telegram-desktop"
-# exec --no-startup-id "slack"
+exec --no-startup-id "slack"
 
 exec --no-startup-id "xset r rate 240 40"
 # exec --no-startup-id "xset s off -dpms"
@@ -304,6 +305,7 @@ assign [class="Telegram"] 4
 assign [class="Slack"] 4
 assign [class="zoom"] 5
 assign [class="chrome"] 3
+assign [class="firefox"] 3
 assign [class="Gvim"] 2
 assign [class="neovide"] 2
 assign [class="Qemu-system-x86_64"] 5

@@ -94,6 +94,15 @@ cmd = "sudo ddcutil setvcp 10 35 > /dev/null"
 idle_bg = "#101010"
 
 
+[[block]]
+block = "xrandr"
+format = " $icon $brightness $resolution "
+[[block.click]]
+button = "down"
+action = "brightness_up"
+[[block.click]]
+button = "up"
+action = "brightness_down"
 
 [[block]]
 block = "sound"
@@ -106,10 +115,12 @@ action = "volume_down"
 [[block.click]]
 button = "left"
 cmd = "pavucontrol"
+[block.theme_overrides]
+idle_bg = "#101010"
 
 [[block]]
 block = "time"
 interval = 5
 format = " $timestamp.datetime(f:'%a %d %b %R') "
-[block.theme_overrides]
-idle_bg = "#000000"
+# [block.theme_overrides]
+# idle_bg = "#000000"

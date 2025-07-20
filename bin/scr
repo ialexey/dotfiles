@@ -1,2 +1,6 @@
 #/bin/bash
-maim -s | tee >(xclip -selection clipboard -t image/png -i $f) > ~/Pictures/Screenshots/$(date '+%F-%r').png
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  grim -g "$(slurp)" - | tee >(wl-copy) > ~/Pictures/Screenshots/$(date '+%F-%r').png
+else
+  maim -s | tee >(xclip -selection clipboard -t image/png -i $f) > ~/Pictures/Screenshots/$(date '+%F-%r').png
+fi

@@ -1,466 +1,259 @@
-@import "theme.css";
+/* Keyframes */
 
+@keyframes blink-critical {
+	to {
+		/*color: @white;*/
+		background-color: @critical;
+	}
+}
+
+
+/* Styles */
+
+/* Colors (gruvbox) */
+@define-color black	#282828;
+@define-color red	#cc241d;
+@define-color green	#98971a;
+@define-color yellow	#d79921;
+@define-color blue	#458588;
+@define-color purple	#b16286;
+@define-color aqua	#689d6a;
+@define-color gray	#a89984;
+@define-color brgray	#928374;
+@define-color brred	#fb4934;
+@define-color brgreen	#b8bb26;
+@define-color bryellow	#fabd2f;
+@define-color brblue	#83a598;
+@define-color brpurple	#d3869b;
+@define-color braqua	#8ec07c;
+@define-color white	#BBB9D7;
+@define-color bg2	#504945;
+
+@define-color dark #0A072A;
+@define-color light #292441;
+
+@define-color warning 	@bryellow;
+@define-color critical	@red;
+@define-color mode	@black;
+@define-color unfocused	#252345;
+@define-color focused	#2A4C89;
+@define-color inactive	@purple;
+@define-color sound	@brpurple;
+@define-color network	@purple;
+@define-color memory	@braqua;
+@define-color cpu	@green;
+@define-color temp	@brgreen;
+@define-color layout	@bryellow;
+@define-color battery	@aqua;
+@define-color date	@black;
+@define-color time	@white;
+
+/* Reset all styles */
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  font-weight: bold;
-  min-height: 0;
-  padding: 0;
-  border: none;
-  margin: 0;
+	border: none;
+	border-radius: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	box-shadow: none;
+	text-shadow: none;
+	icon-shadow: none;
 }
 
-/* <<--< Main Background >-->> */
-
-window#waybar > box {
-  background-color: @main-bg;
-  margin: 2px;
+/* The whole bar */
+#waybar {
+	background: @dark; /* #282828e0 */
+	color: @white;
+	font-family: Fira Code;
+	font-size: 9pt;
+	/*font-weight: bold;*/
 }
 
-/* <<--< Drop Shadow >-->> */
-
-window#waybar {
-  background: @shadow;
-}
-
-/* <<--< Tooltip >-->> */
-
-tooltip {
-  background: @main-bg;
-  border: solid;
-  border-width: 1.5px;
-  border-radius: 8px;
-  border-color: @main-br;
-}
-tooltip label {
-  color: @main-fg;
-  font-weight: normal;
-  margin: -1.5px 3px;
-}
-
-/* <<--< Workspace Buttons >-->> */
-
-#workspaces button {
-  color: @module-fg;
-  border-radius: 8px;
-  box-shadow: none;
-  margin: 2px 0;
-  padding: 0 2px;
-  transition: none;
-}
-#workspaces button:hover {
-  color: @hover-fg;
-  background: @hover-bg;
-  text-shadow: none;
-}
-#workspaces button.active {
-  color: @active-fg;
-  background: @active-bg;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
-  margin: 2px;
-  padding: 0 6px;
-}
-
-/* <<--< General >-->> */
-
-#custom-ws,
-#workspaces,
-#window,
-#custom-cpuinfo,
-#memory,
-#cpu,
-#idle_inhibitor,
-#clock,
-#custom-wifi,
-#bluetooth,
-#custom-update,
-#mpris,
-#pulseaudio,
-#backlight,
+/* Each module */
 #battery,
-#network,
+#clock,
+#cpu,
 #language,
+#memory,
 #custom-fan1,
 #custom-fan2,
 #custom-brightness,
-#custom-power {
-  opacity: 1;
-  color: @module-fg;
-  padding: 0 4px;
-}
-
-#custom-left1,
-#custom-left2,
-#custom-left3,
-#custom-left4,
-#custom-left5,
-#custom-left6,
-#custom-left7,
-#custom-left8 {
-  margin-bottom: 0;
-  text-shadow: -2px 0 2px rgba(0, 0, 0, 0.5);
-}
-
-#custom-right1,
-#custom-right2,
-#custom-right3,
-#custom-right4,
-#custom-right5 {
-  margin-bottom: 0;
-  padding-right: 3px;
-  text-shadow: 2px 0 2px rgba(0, 0, 0, 0.5);
-}
-
-/* <<--< Modules >-->> */
-
-/* Window Icon */
-
-#custom-ws {
-  background: @main-bg;
-}
-#custom-ws:hover {
-  color: @hover-fg;
-}
-
-/* Workspaces */
-
-#custom-left1 {
-  color: @workspaces;
-  background: @main-bg;
-  margin-bottom: 0;
-  padding-left: 2px;
-}
-#workspaces {
-  background: @workspaces;
-}
-#custom-right1 {
-  color: @workspaces;
-  background: @main-bg;
-  text-shadow: 3px 0 2px rgba(0, 0, 0, 0.4);
-  margin-bottom: 0;
-}
-
-/* Temperature */
-
-#custom-paddc {
-  padding-right: 22px;
-}
-#custom-left2 {
-  /* color: @cpuinfo; */
-  /* background: @main-bg; */
-  padding-left: 3px;
-}
-#custom-cpuinfo {
-  /* background: @cpuinfo; */
-  padding-left: 1px;
-  padding-right: 0;
-}
-
-/* Memory */
-
-#custom-left3 {
-  /* color: @memory; */
-  /* background: @cpuinfo; */
-  padding-left: 3px;
-}
-#memory {
-  /* background: @memory; */
-  padding-left: 1px;
-  padding-right: 0;
-}
-#memory.warning {
-  color: @warning;
-}
-#memory.critical {
-  color: @critical;
-}
-#custom-sep {
-  margin-left: 2px;
-  margin-right: 2px;
-}
-
-/* CPU */
-
-#custom-left4 {
-  /* color: @cpu; */
-  /* background: @memory; */
-  padding-left: 3px;
-}
-#cpu {
-  /* background: @cpu; */
-}
-#custom-leftin1 {
-  color: @cpu;
-  margin-bottom: -1px;
-}
-
-/* Distro Icon */
-
-#custom-left5 {
-  color: @distro-bg;
-  background: @main-bg;
-  text-shadow: none;
-  margin-bottom: -2px;
-  padding-left: 3px;
-}
-#custom-distro {
-  color: @distro-fg;
-  background: @distro-bg;
-  margin: 0 -1px -2px 0;
-  padding: 0 0 0 3px;
-  text-shadow: 0 0 1.5px rgba(0, 0, 0, 1);
-}
-#custom-right2 {
-  color: @distro-bg;
-  background: @main-bg;
-  text-shadow: none;
-  margin-bottom: -2px;
-}
-
-/* Time */
-
-#custom-rightin1 {
-  color: @time;
-  margin-bottom: -1px;
-}
-#idle_inhibitor {
-  background: @time;
-  margin-right: -2px;
-  padding: 0 0 0 7px;
-}
-#idle_inhibitor:hover {
-  color: @hover-fg;
-}
-#clock.time {
-  /* background: @time; */
-  padding: 0 3px 0 0;
-}
-#custom-right3 {
-  color: @time;
-  background: @date;
-}
-
-/* Date */
-
-#clock.date {
-  /* background: @date; */
-}
-#clock.date:hover {
-  /* color: @hover-fg; */
-}
-#custom-right4 {
-  color: @date;
-  background: @tray;
-}
-
-/* Tray */
-#tray {
-  margin-left: 10px;
-}
-
-#tray menu {
-  font-size: 19px;
-}
-
-#custom-wifi {
-  padding-left: 5px;
-  padding-right: 8px;
-  background: @tray;
-}
-#custom-wifi:hover {
-  color: @hover-fg;
-}
-
-#bluetooth {
-  padding-right: 5px;
-  background: @tray;
-}
-#bluetooth:hover {
-  color: @hover-fg;
-}
-
-#custom-update {
-  padding-right: 8px;
-  background: @tray;
-}
-#custom-update:hover {
-  color: @hover-fg;
-}
-#custom-right5 {
-  color: @tray;
-  background: @main-bg;
-}
-
-/* Media Info */
-
+#mode,
+#network,
+#pulseaudio,
+#temperature,
+#tray,
+#backlight,
+#idle_inhibitor,
+#disk,
+#user,
 #mpris {
-  font-weight: normal;
-  background-color: @main-bg;
-  padding-right: 8px;
-  padding-left: 8px;
-}
-#mpris:hover {
-  color: @hover-fg;
+	padding-left: 6pt;
+	padding-right: 6pt;
 }
 
-/* Output Device */
-
-#custom-left6 {
-  color: @pulseaudio;
-  background: @main-bg;
-  padding-left: 3px;
-}
-#pulseaudio {
-  /* background: @pulseaudio; */
-}
-
-#pulseaudio:hover {
-  color: @hover-fg;
+/* Each critical module */
+#mode,
+#memory.critical,
+#cpu.critical,
+#temperature.critical,
+#battery.critical.discharging {
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-name: blink-critical;
+	animation-duration: 1s;
 }
 
-/* Brightness */
-
-#custom-left7 {
-  color: @backlight;
-  background: @pulseaudio;
-  padding-left: 2px;
-}
-#backlight {
-  background: @backlight;
+/* Each warning */
+#network.disconnected,
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#battery.warning.discharging {
+	color: @warning;
 }
 
-/* Battery */
+/* And now modules themselves in their respective order */
 
-#custom-left8 {
-  color: @battery;
-  background: @backlight;
-  padding-left: 2px;
-}
-#battery {
-  color: @module-fg;
-  background: @battery;
-}
-#battery.warning {
-  color: @warning;
-}
-#battery.critical {
-  color: @critical;
-}
-#battery.charging {
-  color: @charging;
+/* Current sway mode (resize etc) */
+#mode {
+	color: @white;
+	background: @mode;
 }
 
-/* Power Button */
-
-#custom-leftin2 {
-  color: @battery;
-  background: @main-bg;
-  margin-bottom: -1px;
-}
-#custom-power {
-  color: @main-bg;
-  background: @power;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
-  margin: 2px 4px 2px 0;
-  padding: 0 6px 0 9px;
-}
-#custom-power:hover {
-  color: @hover-fg;
-  background: @hover-bg;
-  text-shadow: none;
-  box-shadow: none;
-}
-
-/* <<--< FONT SIZES >-->> */
-
-/*
-  NOTE: Be careful when changing font sizes, as they
-  can affect alignment.
-
-  Try adjusting whole numbers first, then refine with
-  decimals.
-
-  If you increase or decrease a value, make the same
-  change to all properties in this section to keep
-  the layout consistent.
-*/
-
-/* workspace icon and buttons, window and media title */
-* {
-  font-size: 13px;
-}
-
-/* left and right arrows */
-#custom-left1,
-#custom-left2,
-#custom-left3,
-#custom-left4,
-#custom-left5,
-#custom-left6,
-#custom-left7,
-#custom-left8,
-#custom-right1,
-#custom-right2,
-#custom-right3,
-#custom-right4,
-#custom-right5 {
-  /* font-size: 14.68px; */
-}
-
-/* left and right inverse */
-#custom-leftin1,
-#custom-leftin2,
-#custom-rightin1 {
-  /* font-size: 15.5px; */
-}
-
-/* distro icon */
-#custom-distro {
-  /* font-size: 14.6px; */
-}
-
-/* distro arrows override */
-#custom-left5,
-#custom-right2 {
-  /* font-size: 15.68px; */
-}
-
-/*
-  Adjust these properties as well to keep the design
-  consistent.
-*/
-
+/* Workspaces stuff */
 #workspaces button {
-  border-radius: 8px;
-  padding: 0 2px;
-}
-#workspaces button.active {
-  padding: 0 6px;
+	/*font-weight: bold;*/
+	padding-left: 1pt;
+	padding-right: 1pt;
+	color: #767396;
+	background: @unfocused;
+  margin-right: 1px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border: 1px solid #333053;
 }
 
-#custom-power {
-  border-radius: 10px;
-  padding: 0 6px 0 9px;
+/* Inactive (on unfocused output) */
+#workspaces button.visible {
+	color: @white;
+	background: @focused;
+  border: 1px solid #4667A4;
+}
+
+/* Active (on focused output) */
+#workspaces button.focused {
+	color: @black;
+	background: @focused;
+}
+
+/* Contains an urgent window */
+#workspaces button.urgent {
+	color: @black;
+	background: @warning;
+}
+
+/* Style when cursor is on the button */
+#workspaces button:hover {
+	background: @black;
+	color: @white;
+}
+
+#window {
+	margin-right: 35pt;
+	margin-left: 35pt;
+}
+
+#pulseaudio {
+	background: @dark;
 }
 
 #network {
+	background: @light;
+	color: @white;
 }
-/*
-  NOTE: If your changes don’t take effect, they might
-  be overridden by `animation.css`.
 
-  To fix this, copy your updated font sizes from this
-  file and paste them into the corresponding `*_expand`
-  keyframes.
+#memory {
+	background: @light;
+}
 
-  For example, if you change the font size of the
-  distro icon, update it in `distro_expand`.
+#cpu {
+	background: @dark;
+	color: @white;
+}
 
-  - distro icon → `distro_expand` (line 143)
-  - power button → `power_expand` (line 158)
-  - all other modules → `module_expand` (line 172)
-*/
+#custom-brightness {
+  background: @light;
+}
 
-/* @import "animation.css"; */
+#temperature {
+	background: @temp;
+	color: @black;
+}
+
+#language {
+	background: @dark;
+}
+
+#battery {
+	background: @battery;
+	color: @white;
+}
+
+#tray {
+	background: @dark;
+  font-family: Sans;
+  font-size: 10pt;
+  padding: 0 6pt;
+}
+
+#tray menu {
+  border-radius: 13px;
+  padding: 4px;
+}
+
+#tray menu separator,
+menuitem separator {
+  border-top: 1px solid rgba(155, 159, 150, 0.3);
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+#tray menuitem {
+  border-radius: 10px;
+  padding: 8px 8px; /* vertical | horizontal padding */
+  margin: 2px 0;
+}
+
+#custom-fan1 {
+  background: @light;
+}
+#custom-fan2 {
+  background: @dark;
+  color: @white;
+}
+
+#clock.date {
+	background: @light;
+}
+
+#clock.time {
+	background: @light;
+}
+
+#clock.datetime {
+  background: @light;
+}
+
+#custom-sep-dk {
+  background: @dark;
+  color: @light;
+  font-size: 12pt;
+}
+
+#custom-sep-lt {
+  background: @light;
+  color: @dark;
+  font-size: 12pt;
+}

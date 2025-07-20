@@ -1,20 +1,45 @@
 menu {
-  border: 1px solid rgba(155, 159, 150, 0.3);
-  border-radius: 15px;
+  /* border: 1px solid rgba(155, 159, 150, 0.3); */
+  /* border-radius: 15px; */
   padding: 4px;
 }
 
 menu separator,
 menuitem separator {
   border-top: 1px solid rgba(155, 159, 150, 0.3);
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 menuitem {
-  border-radius: 10px;
+  /* border-radius: 10px; */
   padding: 8px 8px; /* vertical | horizontal padding */
   margin: 2px 0;
 }
 
 menubar {
   padding: 10px 12px; /* vertical | horizontal padding */
+}
+
+window, dialog {
+  /* border-radius: 15px; */
+  /* border: 2px solid rgba(255, 255, 255, 0.08); */
+  /* background-color: rgba(53, 53, 53, 0.5); */
+}
+notebook {
+  border-radius: 15px;
+}
+stack {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+grid {
+  padding:1px;
+}
+dialog buttonbox {
+  padding: 10px;
 }

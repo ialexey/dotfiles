@@ -12,39 +12,43 @@
   "layer": "top",
   "position": "top",
   // If height property would be not present, it'd be calculated dynamically
-  "height": 30,
+  // "height": 23,
   "modules-left": [
     "hyprland/workspaces",
     "hyprland/mode"
   ],
-  "modules-center": [
-    // "hyprland/window"
-    "clock#date",
-    "clock#time"
-  ],
+  // "modules-center": [
+  //   // "hyprland/window"
+  //   // "clock#date",
+  //   // "clock#time"
+  // ],
   "modules-right": [
+    "custom/sep-dk",
     "network",
-    "custom/sep",
+    "custom/sep-lt",
     "cpu",
-    "custom/sep",
+    "custom/sep-dk",
     "custom/fan1",
-    "custom/sep",
+    "custom/sep-lt",
     "custom/fan2",
-    "custom/sep",
+    "custom/sep-dk",
     "memory",
-    "custom/sep",
+    "custom/sep-lt",
     // "temperature",
     "pulseaudio",
     // "custom/sep",
     //"custom/sep",
     // "battery",
-    "custom/sep",
+    "custom/sep-dk",
     // "clock#date",
     // "clock#time",
     // "custom/sep",
     "custom/brightness",
-    "custom/sep",
+    "custom/sep-lt",
     "hyprland/language",
+    "custom/sep-dk",
+    "clock#datetime",
+    "custom/sep-lt",
     "tray"
   ],
   // -------------------------------------------------------------------------
@@ -79,6 +83,17 @@
     "format": "{:%e %b %Y}", // Icon: calendar-alt
     "tooltip-format": "{:%e %B %Y}",
     "tooltip": false
+  },
+  "clock#time": {
+    "interval": 1,
+    "format": " {:%H:%M}",
+    "tooltip": false
+  },
+  "clock#datetime": {
+    "interval": 1,
+    "format": "{:%e %b %Y, %H:%M}", 
+    "tooltip-format": "{:%e %B %Y, :%H:%M}",
+    "tooltip": true
   },
   "cpu": {
     "interval": 5,
@@ -170,7 +185,7 @@
     "spacing": 10
   },
   "custom/brightness": {
-    "format": "{icon} {percentage}%",
+    "format": "{icon}  {percentage}%",
     "format-icons": [
       "\uDB80\uDCDE",
       "\uDB80\uDCDF",
@@ -191,8 +206,12 @@
     "exec": "sensors | rg fan3 | awk '{print $2 \" \" $3}'",
     "interval": 3
   },
-  "custom/sep": {
-    "format": "|",
+  "custom/sep-dk": {
+    "format": "",
+    "tooltip": false
+  },
+  "custom/sep-lt": {
+    "format": "",
     "tooltip": false
   }
 }

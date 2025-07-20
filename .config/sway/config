@@ -48,16 +48,16 @@ exec_always --no-startup-id ~/bin/monitor
 
 exec --no-startup-id keynav
 
-exec --no-startup-id "tmux new -d -s alexey && ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && alacritty -o font.size=9.0 -e tmux attach -t alexey"
+# exec --no-startup-id "tmux new -d -s alexey && ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && alacritty -o font.size=9.0 -e tmux attach -t alexey"
 
-exec --no-startup-id "google-chrome-stable"
+exec --no-startup-id "firefox"
 exec --no-startup-id "telegram-desktop"
 # exec --no-startup-id "slack"
 
 # exec --no-startup-id "xset r rate 240 40"
 # exec --no-startup-id "xset s off -dpms"
 
-exec --no-startup-id "feh --bg-scale ~/Documents/walltux.jpg"
+# exec --no-startup-id "feh --bg-scale ~/Documents/walltux.jpg"
 
 exec --no-startup-id "lxsession"
 
@@ -295,6 +295,7 @@ assign [app_id="org.telegram.desktop"] 4
 assign [class="Slack"] 4
 assign [class="zoom"] 5
 assign [app_id="google-chrome"] 3
+assign [app_id="firefox"] 3
 assign [class="Gvim"] 2
 assign [app_id="neovide"] 2
 assign [class="Qemu-system-x86_64"] 5
@@ -311,3 +312,9 @@ input type:keyboard {
     repeat_delay 240
     repeat_rate 40
 }
+
+# blur enable
+# blur_xray enable
+# shadow_blur_radius 90
+# shadows enable
+# corner_radius 20
