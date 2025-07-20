@@ -135,7 +135,7 @@
   border: 1px solid #333053;
 }
 
-/* Inactive (on unfocused output) */
+/* current workspace */
 #workspaces button.visible {
 	color: @white;
 	background: @focused;
@@ -145,7 +145,7 @@
 /* Active (on focused output) */
 #workspaces button.focused {
 	color: @black;
-	background: @focused;
+	background: @unfocused;
 }
 
 /* Contains an urgent window */
@@ -156,7 +156,7 @@
 
 /* Style when cursor is on the button */
 #workspaces button:hover {
-	background: @black;
+	/* background: @unfocused; */
 	color: @white;
 }
 
