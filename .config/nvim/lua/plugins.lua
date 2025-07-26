@@ -179,7 +179,7 @@ require("lazy").setup({
           additional_vim_regex_highlighting = false,
         },
         indent = {
-          enable = false,
+          enable = true,
         },
         textobjects = {
           select = {
@@ -424,6 +424,15 @@ require("lazy").setup({
       selector = {
         provider = "telescope", -- or "file_selector" for file selector
       },
+      windows = {
+        input = {
+          prefix = '»',
+          height = 8,
+        },
+        ask = { 
+          start_insert = false,
+        }
+      }
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",

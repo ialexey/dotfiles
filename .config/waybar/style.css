@@ -32,7 +32,7 @@
 @define-color dark #0A072A;
 @define-color light #292441;
 
-@define-color warning 	@bryellow;
+@define-color warning 	#ad2d37;
 @define-color critical	@red;
 @define-color mode	@black;
 @define-color unfocused	#252345;
@@ -66,7 +66,6 @@
 	color: @white;
 	font-family: Fira Code;
 	font-size: 9pt;
-	/*font-weight: bold;*/
 }
 
 /* Each module */
@@ -127,10 +126,12 @@
 	/*font-weight: bold;*/
 	padding-left: 1pt;
 	padding-right: 1pt;
+	padding-top: 0pt;
+	padding-bottom: 0pt;
 	color: #767396;
 	background: @unfocused;
-  margin-right: 1px;
-  margin-top: 2px;
+  margin-left: 2px;
+  margin-top: 1px;
   margin-bottom: 2px;
   border: 1px solid #333053;
 }

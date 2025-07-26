@@ -12,7 +12,7 @@
   "layer": "top",
   "position": "top",
   // If height property would be not present, it'd be calculated dynamically
-  // "height": 23,
+  "height": 21,
   "modules-left": [
     "hyprland/workspaces",
     "hyprland/mode"
@@ -97,7 +97,7 @@
   },
   "cpu": {
     "interval": 5,
-    "format": "  {usage}% ({load})", // Icon: microchip
+    "format": "   {usage}% ({load})", // Icon: microchip
     "states": {
       "warning": 70,
       "critical": 90
@@ -113,9 +113,9 @@
   },
   "network": {
     "interval": 5,
-    "format-wifi": "  {essid} ({signalStrength}%)", // Icon: wifi
-    "format-ethernet": "  {ifname}: {ipaddr}/{cidr}", // Icon: ethernet
-    "format-disconnected": "⚠  Disconnected",
+    "format-wifi": "   {essid} ({signalStrength}%)", // Icon: wifi
+    "format-ethernet": "   {ifname}: {ipaddr}/{cidr}", // Icon: ethernet
+    "format-disconnected": "⚠   Disconnected",
     "tooltip-format": "{ifname}: {ipaddr}"
   },
   "hyprland/mode": {
@@ -185,7 +185,7 @@
     "spacing": 10
   },
   "custom/brightness": {
-    "format": "{icon}  {percentage}%",
+    "format": "{icon}   {percentage}%",
     "format-icons": [
       "\uDB80\uDCDE",
       "\uDB80\uDCDF",

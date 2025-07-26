@@ -1,6 +1,6 @@
 menu {
-  /* border: 1px solid rgba(155, 159, 150, 0.3); */
-  /* border-radius: 15px; */
+  border: 1px solid rgba(155, 159, 150, 0.3);
+  border-radius: 15px;
   padding: 4px;
 }
 
@@ -12,7 +12,7 @@ menuitem separator {
 }
 
 menuitem {
-  /* border-radius: 10px; */
+  border-radius: 10px;
   padding: 8px 8px; /* vertical | horizontal padding */
   margin: 2px 0;
 }
@@ -22,9 +22,9 @@ menubar {
 }
 
 window, dialog {
-  /* border-radius: 15px; */
-  /* border: 2px solid rgba(255, 255, 255, 0.08); */
-  /* background-color: rgba(53, 53, 53, 0.5); */
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(53, 53, 53, 0.5);
 }
 notebook {
   border-radius: 15px;

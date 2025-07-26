@@ -1,0 +1,3 @@
+control + super + Return
+  win_name=$(xdotool getwindowfocus getwindowname); [[ $win_name == Alacritty ]] && tmux resize-pane -Z ; \
+  win_name=$(xdotool getwindowfocus getwindowname); [[ $win_name == Neovide ]] && xdotool key --clearmodifiers ctrl+f

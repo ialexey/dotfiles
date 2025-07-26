@@ -1,0 +1,6 @@
+#!/bin/bash
+
+win_class=$(hyprctl activewindow -j | jq -r '.class')
+if [[ "$win_class" == "Alacritty" ]]; then
+  tmux resize-pane -Z
+fi
