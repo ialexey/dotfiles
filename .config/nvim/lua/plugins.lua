@@ -1,4 +1,4 @@
-require("lazy").setup({
+return {
   checker = { enabled = true },
   -- LSP and completion
   {
@@ -504,4 +504,4 @@ require("lazy").setup({
       { "<C-f>", "<cmd>MaximizerToggle<CR>", desc = "Toggle maximize split" },
     }
   },
-})
+}
