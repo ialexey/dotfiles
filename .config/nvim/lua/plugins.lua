@@ -2,18 +2,19 @@ return {
   checker = { enabled = true },
   -- LSP and completion
   {
-    { 
+    {
       "neovim/nvim-lspconfig",
       dependencies = {
         { "williamboman/mason.nvim", config = true },
         -- { "williamboman/mason-lspconfig.nvim", config = true, },
       },
       config = function()
-        local lspconfig = require("lspconfig")
+        local lspconfig = vim.lsp.config
         local util = require("lspconfig.util")
 
-        lspconfig.solargraph.setup({
+        lspconfig('solargraph', {
           cmd = { "solargraph", "stdio" },
+          filetypes = { "ruby" },
           root_dir = util.root_pattern("Gemfile", ".git", ".ruby-version"),
           settings = {
             solargraph = {
@@ -24,12 +25,12 @@ return {
           },
         })
 
-        lspconfig.ts_ls.setup({
+        lspconfig('ts_ls', {
           settings = {
             javascript = {
               inlayHints = {
                 includeInlayEnumMemberValueHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = false,
                 includeInlayFunctionParameterTypeHints = true,
                 includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
                 includeInlayParameterNameHintsWhenArgumentMatchesName = true,
@@ -40,7 +41,7 @@ return {
             typescript = {
               inlayHints = {
                 includeInlayEnumMemberValueHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = false,
                 includeInlayFunctionParameterTypeHints = true,
                 includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
                 includeInlayParameterNameHintsWhenArgumentMatchesName = true,
@@ -51,7 +52,7 @@ return {
           }
         })
 
-        lspconfig.gopls.setup({
+        lspconfig('gopls', {
           settings = {
             gopls = {
               hints = {
@@ -74,6 +75,24 @@ return {
         keymap("n", "gd", vim.lsp.buf.definition, opts)
         keymap("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end, opts)
         keymap("n", "K", vim.lsp.buf.hover, opts)
+
+        vim.lsp.enable('solargraph')
+        vim.lsp.enable('ts_ls')
+        vim.lsp.enable('gopls')
+      end
+    },
+    {
+      "nvimtools/none-ls.nvim",
+      dependencies = {
+        "nvimtools/none-ls-extras.nvim",
+      },
+      config = function()
+        local null_ls = require("null-ls")
+        null_ls.setup({
+          sources = {
+            require("none-ls.diagnostics.eslint")
+          },
+        })
       end
     },
     {
@@ -167,8 +186,12 @@ return {
   },
 
   {
+    "nvim-pack/nvim-spectre"
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
-    branch = 'master', 
+    branch = 'master',
     lazy = false,
     build = ":TSUpdate",
     config = function()
@@ -215,6 +238,7 @@ return {
     end
   },
   { "tpope/vim-rhubarb" }, -- GBrowse
+  { "sindrets/diffview.nvim" },
   -- lazy.nvim
 
   -- Text editing
@@ -227,7 +251,7 @@ return {
       vim.keymap.set("n", "ga", "<Plug>(EasyAlign)", { silent = true })
     end
   },
-  { 
+  {
     "mg979/vim-visual-multi",
     init = function()
       vim.g.VM_maps = {
@@ -237,22 +261,6 @@ return {
     end
   },
   { "AndrewRadev/splitjoin.vim" },
-  {
-    "kevinhwang91/nvim-ufo",
-    dependencies = { "kevinhwang91/promise-async" },
-    config = function()
-      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-      vim.o.foldcolumn = '1'
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-      require("ufo").setup({
-        provider_selector = function(bufnr, filetype, buftype)
-          return {"treesitter", "indent"}
-        end
-      })
-    end
-  },
   {
     'luukvbaal/statuscol.nvim',
     opts = function()
@@ -389,88 +397,6 @@ return {
   },
 
   {
-    "olimorris/codecompanion.nvim",
-    opts = {},
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {
-      strategies = {
-        chat = { adapter = "copilot" },
-        inline = { adapter = "copilot" },
-      },
-    },
-  },
-
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
-    opts = {
-      -- add any opts here
-      -- for example
-      provider = "copilot",
-      providers = {
-        copilot = {
-          model = "gpt-4.1", -- your desired model (or use gpt-4o, etc.)
-          extra_request_body = {
-            timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
-            temperature = 0.75,
-            max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
-            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-          },
-        },
-      },
-      selector = {
-        provider = "telescope", -- or "file_selector" for file selector
-      },
-      windows = {
-        input = {
-          prefix = '»',
-          height = 8,
-        },
-        ask = { 
-          start_insert = false,
-        }
-      }
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = "make",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
-    },
-  },
-  {
     "mistweaverco/kulala.nvim",
     keys = {
       { "<leader>Rs", desc = "Send request" },
@@ -503,5 +429,24 @@ return {
     keys = {
       { "<C-f>", "<cmd>MaximizerToggle<CR>", desc = "Toggle maximize split" },
     }
+  },
+  {
+    "slim-template/vim-slim"
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup({
+        opts = {
+          -- Defaults
+          enable_close = true, -- Auto close tags
+          enable_rename = true, -- Auto rename pairs of tags
+          enable_close_on_slash = true -- Auto close on trailing </
+        },
+        aliases = {
+          ["eruby"] = "html",
+        }
+      })
+    end,
   },
 }

@@ -329,7 +329,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Yank current file path
-nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
+" nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
+nnoremap yp :let @* = fnamemodify(expand('%'), ':.')<CR>:echo 'Yanked: ' . @*<CR>
 
 function GoToFileInExistingBuf()
   let mycurf=expand("<cfile>")
@@ -450,3 +451,12 @@ nnoremap <silent> <C-w>H :call MoveWindowToDirection('h')<CR>
 nnoremap <silent> <C-w>J :call MoveWindowToDirection('j')<CR>
 nnoremap <silent> <C-w>K :call MoveWindowToDirection('k')<CR>
 nnoremap <silent> <C-w>L :call MoveWindowToDirection('l')<CR>
+
+" Trim trailing whitespace on save for all files
+function! TrimWhitespace()
+  let l:save = winsaveview()
+  %s/\s\+$//e
+  call winrestview(l:save)
+endfunction
+
+autocmd BufWritePre * call TrimWhitespace()

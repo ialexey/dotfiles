@@ -72,10 +72,13 @@ function gcbd() {
   gcb $(dasherize $1)
 }
 
-type rbenv > /dev/null && eval "$(rbenv init -)"
+# type rbenv > /dev/null && eval "$(rbenv init -)"
+eval "$(mise activate zsh)"
 # eval "$(nodenv init -)"
 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-build/issues/1385
 
 # make Ctrl-O working
 stty discard undef
+
+source $HOME/.claude

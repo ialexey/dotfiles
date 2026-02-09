@@ -1,6 +1,21 @@
 #!/bin/bash
 
-a=$(sudo ddcutil getvcp 10 -t | awk '{print $4}')
-let a=$1+a
-sudo ddcutil setvcp 10 $a > /dev/null
+CACHE_FILE="/tmp/ddcutil_brightness"
+
+# Read cached value or fetch if missing
+if [[ -f "$CACHE_FILE" ]]; then
+    a=$(cat "$CACHE_FILE")
+else
+    a=$(sudo ddcutil getvcp 10 -t | awk '{print $4}')
+fi
+
+# Apply delta
+a=$((a + $1))
+
+# Clamp to 0-100
+((a < 0)) && a=0
+((a > 100)) && a=100
+
+# Set and cache
+sudo ddcutil setvcp 10 $a > /dev/null && echo $a > "$CACHE_FILE"
 echo $a
