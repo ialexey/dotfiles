@@ -62,6 +62,8 @@ exec --no-startup-id "feh --bg-scale ~/Documents/walltux.jpg"
 
 exec --no-startup-id "lxsession"
 
+exec --no-startup-id setxkbmap -layout us,ru -option grp:win_space_toggle
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
@@ -245,7 +247,7 @@ mode "nobinds" {
   bindsym $cmd+9 workspace number $ws9
   bindsym $cmd+0 workspace number $ws10
 
-  bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
+  # bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
 
   bindcode $mod+47 mode "default"
 }
@@ -297,7 +299,7 @@ bindsym $mod+Shift+Return exec "alacritty -o font.size=9.0 -e tmux new -A -s ale
 
 focus_follows_mouse no
 
-bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
+# bindsym $mod+Return exec "((setxkbmap -query | rg us && setxkbmap ru) || setxkbmap us) > /dev/null"
 bindsym $mod+o exec "~/bin/ocr"
 bindsym $mod+$ctrl+e exec "~/bin/scr"
 

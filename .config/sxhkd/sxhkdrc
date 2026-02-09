@@ -1,3 +1,21 @@
 control + super + Return
   win_name=$(xdotool getwindowfocus getwindowname); [[ $win_name == Alacritty ]] && tmux resize-pane -Z ; \
   win_name=$(xdotool getwindowfocus getwindowname); [[ $win_name == Neovide ]] && xdotool key --clearmodifiers ctrl+f
+
+# --- Monitor brightness ---
+# Increase brightness
+XF86MonBrightnessUp
+    brightnessctl set +5%
+
+# Decrease brightness
+XF86MonBrightnessDown
+    brightnessctl set 5%-
+
+# --- Keyboard backlight ---
+# Increase keyboard brightness
+XF86KbdBrightnessUp
+    brightnessctl -d ':white:kbd_backlight' set +5%
+
+# Decrease keyboard brightness
+XF86KbdBrightnessDown
+    brightnessctl -d ':white:kbd_backlight' set 5%-

@@ -1,6 +1,7 @@
 @theme "gruvbox-dark-hard.rasi"
 
 configuration {
+  dpi: 144;
 }
 
 // @theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
