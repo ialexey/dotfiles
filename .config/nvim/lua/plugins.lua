@@ -10,12 +10,12 @@ return {
       },
       config = function()
         local lspconfig = vim.lsp.config
-        local util = require("lspconfig.util")
 
         lspconfig('solargraph', {
           cmd = { "solargraph", "stdio" },
           filetypes = { "ruby" },
-          root_dir = util.root_pattern("Gemfile", ".git", ".ruby-version"),
+          root_markers = { "Gemfile", ".git" },
+          root_dir = false,
           settings = {
             solargraph = {
               diagnostics = true,
@@ -191,42 +191,72 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = 'master',
+    branch = 'main',
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        auto_install = false,
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false,
-        },
-        indent = {
-          enable = true,
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true, -- optional, jump forward to nearest textobj
-            keymaps = {
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["am"] = "@function.outer",
-              ["im"] = "@function.inner",
-              ["ib"] = "@block.inner",
-              ["ab"] = "@block.outer",
-              ["ir"] = "@block.inner",
-              ["ar"] = "@block.outer",
-            },
-            include_surrounding_whitespace = true,
-          },
-        },
+      require("nvim-treesitter").setup({
+        install_dir = vim.fn.stdpath("data") .. "/site",
+      })
+
+      -- install parsers you want (async; add/remove as needed)
+      require("nvim-treesitter").install({
+        "lua", "vim", "vimdoc", "bash", "python", "ruby",
+        "javascript", "typescript", "tsx", "go", "rust",
+        "json", "yaml", "toml", "html", "css", "markdown", "markdown_inline",
+      })
+
+      -- enable highlight + indent + folds per buffer on FileType
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          local bufnr = args.buf
+          local ft = args.match
+          local lang = vim.treesitter.language.get_lang(ft) or ft
+          if not vim.treesitter.language.add(lang) then return end
+
+          -- highlight
+          vim.treesitter.start(bufnr, lang)
+          -- indent (experimental in the rewrite)
+          vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          -- folds (set window-local; scope as you prefer)
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          vim.wo.foldlevel = 99        -- start with everything open
+          vim.wo.foldenable = true
+          vim.wo.foldmethod = "expr"
+        end,
       })
 
       vim.api.nvim_set_hl(0, "@field", { link = "Identifier" })
     end
   },
-  { "nvim-treesitter/nvim-treesitter-textobjects" },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = 'main',
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+      config = function()
+        require("nvim-treesitter-textobjects").setup({
+          select = {
+            lookahead = true,
+            include_surrounding_whitespace = true,
+          },
+        })
+
+        local select = require("nvim-treesitter-textobjects.select").select_textobject
+        local map = function(lhs, capture)
+          vim.keymap.set({ "x", "o" }, lhs, function()
+            select(capture, "textobjects")
+          end)
+        end
+        map("af", "@function.outer")
+        map("if", "@function.inner")
+        map("am", "@function.outer")
+        map("im", "@function.inner")
+        map("ab", "@block.outer")
+        map("ib", "@block.inner")
+        map("ar", "@block.outer")
+        map("ir", "@block.inner")
+      end,
+  },
 
   { "tpope/vim-unimpaired", lazy = false, },
 
@@ -364,17 +394,17 @@ return {
       extensions = {}
     }
   },
-  {
-    "nvimdev/indentmini.nvim",
-    config = function()
-      require("indentmini").setup({
-        only_current = true,
-        minlevel = 2,
-      })
-      vim.cmd.highlight('IndentLineCurrent guifg=#928374')
-      vim.cmd.highlight('IndentLine guifg=##1d2021')
-    end,
-  },
+  -- {
+  --   "nvimdev/indentmini.nvim",
+  --   config = function()
+  --     require("indentmini").setup({
+  --       only_current = true,
+  --       minlevel = 2,
+  --     })
+  --     vim.cmd.highlight('IndentLineCurrent guifg=#928374')
+  --     vim.cmd.highlight('IndentLine guifg=##1d2021')
+  --   end,
+  -- },
   {
     "mikavilpas/yazi.nvim",
     event = "VeryLazy",
@@ -448,5 +478,14 @@ return {
         }
       })
     end,
+  },
+  {
+      'MeanderingProgrammer/render-markdown.nvim',
+      -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+      -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+      dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+      ---@module 'render-markdown'
+      ---@type render.md.UserConfig
+      opts = {},
   },
 }

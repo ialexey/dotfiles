@@ -329,8 +329,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Yank current file path
-" nnoremap yp :let @*=expand("%")<CR>:echo "Yanked \"".@*."\""<CR>
-nnoremap yp :let @* = fnamemodify(expand('%'), ':.')<CR>:echo 'Yanked: ' . @*<CR>
+nnoremap yp :let @+ = fnamemodify(expand('%'), ':.')<CR>:let @* = @+<CR>:echo 'Yanked: ' . @+<CR>
 
 function GoToFileInExistingBuf()
   let mycurf=expand("<cfile>")
