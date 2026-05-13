@@ -134,27 +134,6 @@ return {
         }
       }
     },
-    {
-      "zbirenbaum/copilot.lua",
-      config = function()
-        require("copilot").setup({
-          filetypes = {
-            ["*"] = true
-          },
-          suggestion = {
-            enabled = true,
-            auto_trigger = true,
-            keymap = {
-              accept = "<Tab>",
-              accept_word = false,
-              accept_line = false,
-              next = "<D-]>",
-              prev = "<D-[>",
-            }
-          }
-        })
-      end
-    },
   },
 
   {
