@@ -8,16 +8,7 @@ export SAVEHIST=1000000
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 export EDITOR="nvim"
-
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-export PATH=$PATH:$ANDROID_HOME/build-tools
-export PATH=$PATH:$ANDROID_HOME/emulator
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
-# export JAVA_HOME="$(/usr/libexec/java_home -v 11)" # brew install temurin11
 
 export PATH="$HOME/bin:$PATH"
 
@@ -80,8 +71,6 @@ function gcbd() {
 # type rbenv > /dev/null && eval "$(rbenv init -)"
 eval "$(mise activate zsh)"
 # eval "$(nodenv init -)"
-
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES # https://github.com/rbenv/ruby-build/issues/1385
 
 # make Ctrl-O working
 stty discard undef

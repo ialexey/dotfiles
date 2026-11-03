@@ -1,5 +1,0 @@
-color compose header            color223 default
-color compose security_encrypt  color175 default
-color compose security_sign     color109 default
-color compose security_both     color142 default
-color compose security_none     color208 default

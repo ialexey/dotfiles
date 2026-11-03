@@ -1,11 +1,7 @@
 .config/coc
 .config/configstore
-.config/mutt/accounts/*
-!.config/mutt/accounts/example
-.config/mutt/cache
-.config/mutt/tmp
-.config/pgcli/history
-.config/pgcli/log
+.config/mutt
+.config/pgcli
 .config/vifm/vifminfo
 .mbsyncrc
 .config/gh
