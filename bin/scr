@@ -2,36 +2,7 @@
 file=~/Pictures/Screenshots/$(date '+%F-%T').png
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  grim -g "$(slurp)" "$file" || exit
-  wl-copy < "$file"
+  grim -g "$(slurp)" "$file" && wl-copy < "$file"
 else
-  maim -s "$file" || exit
-  # Own the clipboard with both image/png and text targets, so image-aware
-  # apps get the picture and terminals get the path.
-  # Requires python-gobject and gtk4, otherwise falls back to image-only xclip.
-  helper=$(cat <<'EOF'
-import sys
-import gi
-gi.require_version("Gdk", "4.0")
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gdk, GLib, GObject, Gtk
-
-path = sys.argv[1]
-Gtk.init()
-with open(path, "rb") as f:
-    png = GLib.Bytes.new(f.read())
-
-clipboard = Gdk.Display.get_default().get_clipboard()
-clipboard.set_content(Gdk.ContentProvider.new_union([
-    Gdk.ContentProvider.new_for_bytes("image/png", png),
-    Gdk.ContentProvider.new_for_value(GObject.Value(str, path)),
-]))
-
-loop = GLib.MainLoop()
-clipboard.connect("changed", lambda cb: cb.is_local() or loop.quit())
-loop.run()
-EOF
-)
-  setsid -f bash -c 'python3 -c "$1" "$2" || xclip -selection clipboard -t image/png -i "$2"' \
-    _ "$helper" "$file" >/dev/null 2>&1
+  maim -s "$file" && xclip -selection clipboard -t image/png -i "$file"
 fi
