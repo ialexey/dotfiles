@@ -10,3 +10,6 @@
 .mbsyncrc
 .config/gh
 .config/vifm/vifminfo.json
+.config/yazi/flavors/
+__pycache__/
+bin/switch
