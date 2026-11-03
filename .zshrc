@@ -32,6 +32,7 @@ alias gm="git merge"
 alias myip="curl ipinfo.io/ip"
 alias ss="sudo systemctl"
 alias neovide="neovide --fork"
+alias dots='stow -d ~/dotfiles -t ~ .'
 
 alias dst='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}.NetIO"'
 
