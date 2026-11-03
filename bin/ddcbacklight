@@ -6,7 +6,14 @@ CACHE_FILE="/tmp/ddcutil_brightness"
 if [[ -f "$CACHE_FILE" ]]; then
     a=$(cat "$CACHE_FILE")
 else
-    a=$(sudo ddcutil getvcp 10 -t | awk '{print $4}')
+    a=$(sudo ddcutil getvcp 10 -t 2>/dev/null | awk '{print $4}')
+    [[ -n "$a" ]] && echo "$a" > "$CACHE_FILE"
+fi
+
+# If no argument, just print current value
+if [[ -z "$1" ]]; then
+    echo $a
+    exit 0
 fi
 
 # Apply delta

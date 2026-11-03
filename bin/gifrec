@@ -1,0 +1,32 @@
+#!/bin/bash
+# gifrec: run once to select a region and start recording; press Esc, run again or Ctrl-C to stop
+# gifrec stop: only stop a running recording
+dir=/tmp/gifrec
+pidfile=$dir/pid
+mkdir -p "$dir"
+
+if [[ -f $pidfile ]]; then
+  kill -INT "$(<"$pidfile")"
+  exit
+fi
+[[ $1 == stop ]] && exit
+
+geom=$(slop -f '%w %h %x %y') || exit 1
+read -r w h x y <<< "$geom"
+ffmpeg -y -loglevel error -f x11grab -framerate 15 -video_size "${w}x${h}" -i "$DISPLAY+$x,$y" \
+  -c:v libx264 -preset ultrafast -qp 0 "$dir/raw.mkv" &
+pid=$!
+echo $pid > "$pidfile"
+i3-msg -q mode gifrec
+trap 'kill -INT $pid' INT
+while kill -0 $pid 2>/dev/null; do wait $pid; done
+i3-msg -q mode default
+rm -f "$pidfile"
+
+out=~/Pictures/rec-$(date +%Y%m%d-%H%M%S).gif
+ffmpeg -loglevel error -i "$dir/raw.mkv" \
+  -vf "fps=12,scale='min(960,iw)':-1:flags=lanczos,split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" \
+  "$out"
+printf 'file://%s\n' "$out" | xclip -selection clipboard -t text/uri-list
+notify-send "GIF saved and copied" "$out" 2>/dev/null
+echo "$out"

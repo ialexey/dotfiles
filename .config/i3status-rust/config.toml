@@ -35,6 +35,7 @@ idle_bg = "#101010"
 
 [[block]]
 block = "temperature"
+interval = 1
 
 # [[block]]
 # block = "battery"
@@ -80,7 +81,7 @@ format = " $icon $mem_used.eng(prefix:M,w:4) / $mem_total.eng(prefix:M,w:4) ($me
 block = "custom"
 command = "~/bin/ddcbacklight"
 format = " 🔆 $text % "
-interval = 10
+interval = 5
 [[block.click]]
 button = "left"
 cmd = "~/bin/ddcbacklight 5"
@@ -97,6 +98,7 @@ idle_bg = "#101010"
 [[block]]
 block = "xrandr"
 format = " $icon $brightness $resolution "
+interval = 9999
 [[block.click]]
 button = "down"
 action = "brightness_up"
