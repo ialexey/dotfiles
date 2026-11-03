@@ -64,6 +64,10 @@ bindkey -M vicmd v edit-command-line
 bindkey '^R' history-incremental-search-backward
 bindkey '^A' history-incremental-search-forward
 
+paste-clipboard() { LBUFFER+=$(xclip -o -selection clipboard) }
+zle -N paste-clipboard
+bindkey '^V' paste-clipboard
+
 function dasherize() {
   ruby -e "puts '$1'.downcase.gsub(/[^a-zA-Z0-9]/, '-').gsub(/-+/, '-').split('-')[0..8].join('-')"
 }
