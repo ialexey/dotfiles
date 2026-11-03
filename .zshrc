@@ -32,6 +32,7 @@ fi
 alias g="git"
 alias gst="git status"
 alias gco="git checkout"
+alias gcb="git checkout -b"
 alias glg="git log"
 alias ggu='git pull origin $(git branch --show-current)'
 alias ggp="git push"
