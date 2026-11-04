@@ -50,10 +50,10 @@ exec --no-startup-id keynav
 
 exec --no-startup-id "tmux new -d -s alexey && ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh && alacritty -o font.size=9.0 -e tmux attach -t alexey"
 
-exec --no-startup-id "google-chrome-stable"
-# exec --no-startup-id "firefox"
 exec --no-startup-id "telegram-desktop"
-exec --no-startup-id "slack"
+
+# per-host settings: host-<hostname>.conf, falls back to host-default.conf
+include ~/.config/i3/host-$(h=$(uname -n); [ -f ~/.config/i3/host-$h.conf ] || h=default; echo $h).conf
 
 exec --no-startup-id "xset r rate 240 40"
 # exec --no-startup-id "xset s off -dpms"
@@ -262,7 +262,8 @@ bindcode $mod+47 mode "nobinds"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-  status_command i3status-rs
+  # uses i3status-rust/<hostname>.toml when present, else config.toml
+  status_command c=~/.config/i3status-rust/$(uname -n).toml; [ -f "$c" ] || c=~/.config/i3status-rust/config.toml; exec i3status-rs "$c"
   position top
   output primary
   tray_output primary
@@ -271,6 +272,7 @@ bar {
   output DisplayPort-3
   output eDP-1-1
   output eDP-1
+  output eDP-2
   output HDMI-2
   output HDMI-1
   output HDMI-0
@@ -282,6 +284,7 @@ bar {
   tray_output DisplayPort-3
   tray_output eDP-1-1
   tray_output eDP-1
+  tray_output eDP-2
   tray_output HDMI-2
   tray_output HDMI-1
   tray_output HDMI-0

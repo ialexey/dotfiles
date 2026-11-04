@@ -42,6 +42,8 @@
 	default = current
 [pull]
 	rebase = true
+[rebase]
+	autoStash = true
 [init]
 	defaultBranch = main
 [credential "https://github.com"]
@@ -50,3 +52,5 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/usr/bin/gh auth git-credential
+[rerere]
+	enabled = true
