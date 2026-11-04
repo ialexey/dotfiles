@@ -1,3 +1,5 @@
-! Xft.dpi: 200
-! Xft.dpi: 135
+#ifdef SRVR_archbookpro
+Xft.dpi: 192
+#else
 Xft.dpi: 165
+#endif
