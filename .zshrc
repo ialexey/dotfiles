@@ -14,6 +14,8 @@ export PATH="$HOME/bin:$PATH"
 
 export LESS=R # colorful less
 
+export SSH_AUTH_SOCK=/run/user/$UID/gcr/ssh
+
 if type eza > /dev/null; then
   alias ls="eza"
 else
