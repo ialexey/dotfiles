@@ -1,3 +1,8 @@
 #!/bin/bash
 
-xrandr --listmonitors | rg DP-2 > /dev/null && xrandr --output DP-2 --primary --right-of eDP-1-1
+if [[ $(uname -n) == archdesk ]]; then
+    # LG UltraFine on DP-4 is the only monitor when connected; MSI on HDMI-0 is turned off
+    xrandr --query | rg -q '^DP-4 connected' && xrandr --output DP-4 --auto --primary --pos 0x0 --output HDMI-0 --off
+else
+    xrandr --listmonitors | rg DP-2 > /dev/null && xrandr --output DP-2 --primary --right-of eDP-1-1
+fi

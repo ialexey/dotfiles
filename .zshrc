@@ -56,6 +56,8 @@ autoload edit-command-line; zle -N edit-command-line
 
 bindkey -M vicmd '_' beginning-of-line
 bindkey -M vicmd v edit-command-line
+bindkey -M viins '^G' edit-command-line
+bindkey -M vicmd '^G' edit-command-line
 bindkey '^R' history-incremental-search-backward
 bindkey '^A' history-incremental-search-forward
 

@@ -90,7 +90,7 @@ button = "right"
 cmd = "~/bin/ddcbacklight -5"
 [[block.click]]
 button = "middle"
-cmd = "sudo ddcutil setvcp 10 35 > /dev/null"
+cmd = "~/bin/ddcbacklight =35"
 [block.theme_overrides]
 idle_bg = "#101010"
 

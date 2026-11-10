@@ -1,13 +1,33 @@
 #!/bin/bash
+# usage: ddcbacklight [+N|-N|=N]
 
-CACHE_FILE="/tmp/ddcutil_brightness"
+MODEL="LG UltraFine"
+CACHE_FILE="/tmp/ddcutil_brightness_lg"
+BUS_FILE="/tmp/ddcutil_bus_lg"
+
+exec 9> /tmp/ddcbacklight.lock
+flock 9
+
+# Selecting by --model probes every display (~12s), so resolve the i2c bus once and cache it
+find_bus() {
+    bus=$(sudo ddcutil detect -t 2>/dev/null | awk -v m="$MODEL" '
+        /I2C bus:/ { b = $3; sub(".*i2c-", "", b) }
+        /Monitor:/ && index($0, m) { print b; exit }')
+    [[ -n $bus ]] && echo "$bus" > "$BUS_FILE"
+}
+
+ddc() {
+    [[ -n $bus ]] || bus=$(cat "$BUS_FILE" 2>/dev/null)
+    [[ -n $bus ]] || find_bus
+    sudo ddcutil --bus "$bus" --noverify --skip-ddc-checks "$@" 2>/dev/null && return
+    find_bus && sudo ddcutil --bus "$bus" --noverify --skip-ddc-checks "$@" 2>/dev/null
+}
 
 # Read cached value or fetch if missing
-if [[ -f "$CACHE_FILE" ]]; then
-    a=$(cat "$CACHE_FILE")
-else
-    a=$(sudo ddcutil getvcp 10 -t 2>/dev/null | awk '{print $4}')
-    [[ -n "$a" ]] && echo "$a" > "$CACHE_FILE"
+a=$(cat "$CACHE_FILE" 2>/dev/null)
+if [[ ! $a =~ ^[0-9]+$ ]]; then
+    a=$(ddc getvcp 10 -t | awk '$1 == "VCP" && $2 == "10" {print $4}')
+    [[ $a =~ ^[0-9]+$ ]] && echo "$a" > "$CACHE_FILE"
 fi
 
 # If no argument, just print current value
@@ -16,13 +36,19 @@ if [[ -z "$1" ]]; then
     exit 0
 fi
 
-# Apply delta
-a=$((a + $1))
+# Apply absolute (=N) or delta (+N/-N)
+[[ $a =~ ^[0-9]+$ ]] || exit 1
+
+if [[ $1 == =* ]]; then
+    a=${1#=}
+else
+    a=$((a + $1))
+fi
 
 # Clamp to 0-100
 ((a < 0)) && a=0
 ((a > 100)) && a=100
 
 # Set and cache
-sudo ddcutil setvcp 10 $a > /dev/null && echo $a > "$CACHE_FILE"
+ddc setvcp 10 $a > /dev/null && echo $a > "$CACHE_FILE"
 echo $a
