@@ -467,3 +467,7 @@
 #    appname = "some_volume_notifiers"
 #    set_stack_tag = "volume"
 #
+
+[slack]
+    appname = "Slack"
+    new_icon = /usr/share/pixmaps/slack.png
